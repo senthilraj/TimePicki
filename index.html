@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Timepicki - free Time picker jquery plugin</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="css/timepicki.css"/>
+        <style>
+            body{ font-family: 'arial'}
+            a{ text-decoration: none; color: #66666B;}
+            a span{ font-size: 12px;}
+            input{ margin: 0px 30px; float: left}
+        </style>
+    </head>
+    <body>
+        <h1>Timepicki - free Time picker jquery plugin - <a href="https://github.com/senthilraj/TimePicki/">Download <span>- more details</span></a></h1> 
+        <input type="text" name="time"/>
+        <input type="text" name="time2"/>
+        <input type="text" name="time3"/>
+        <input type="text" name="time4"/>
+        <p>Developed by <a href="https://senthilraj.github.io/resume/">Senthilkumar</a></p>
+        <!--<div class='timepicker_wrap' style="display: block; top: 151px; left: 110px;"><div class="arrow_top"></div><div class='time'><div class='prev'></div><div class='ti_tx'>12</div><div class='next'></div></div><div class='mins'><div class='prev'></div><div class='mi_tx'>28</div><div class='next'></div></div><div class='meridian'><div class='prev'></div><div class='mer_tx'>AM</div><div class='next'></div></div></div>-->
+        <script src="https://code.jquery.com/jquery-2.1.1.min.js">
+        </script>
+        <!--<script src="https://code.jquery.com/jquery-1.11.1.min.js">
+        </script>-->
+        <script src="js/timepicki.js">
+        </script>
+        <script>
+            $("input").timepicki();
+        </script>
+    </body>
+</html>
