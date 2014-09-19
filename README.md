@@ -1,7 +1,11 @@
 TimePicki
 =========
 
-Timepicki - free Time picker jquery plugin
+Timepicki - free Time picker jquery plugin, it is simple and clean timepicker so user can understand to set time for your project in input forms.
+
+Reason to make : I have tried to search set timepicker for one of the form page, this type of timepicker only on boostrap framework as bootsstrap-timepicker, but if we use that plugin then also need to use bootstrap css and js, so that will conflict
+our own code css and some time make js conflict issue, that why i make it simple, so you can use easily with jquery library 1.x and 2.x too, if you find any issue or need any additional features in this plugin , kindly reach me on my mail(I mentioned on bottom of the page)
+
 
 How to use
 ==========
@@ -41,7 +45,7 @@ How to use
 
 About me
 ========
- I am senthil and I am 22 years old designer and developer specialised in UserInterface. I am doing rich websites and creating Hybrid mobile apps, any doubts or help feel free to contact me on Mail: senthil2rajan@gmail.com
+ I am senthil and I am 22 years old designer and developer specialised in UserInterface. I am doing rich websites and creating Hybrid mobile apps, any doubts, need to make plugin or add addtional feature in this plugin feel free to catch me on Mail: senthil2rajan@gmail.com
 
 Website: http://senthilraj.github.io/resume/
 
