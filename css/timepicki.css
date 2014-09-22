@@ -26,6 +26,9 @@ font-weight: 700;
     background: url(../images/arrow.png) no-repeat;
     border-radius: 5px;
 }
+
+ .prev:hover, .next:hover{ background-color:#ccc;}
+ 
 .next{ background-position: 50% 150%;}
 .prev{ background-position: 50% -50%;}
  
