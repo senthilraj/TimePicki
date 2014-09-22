@@ -1,13 +1,13 @@
 {
     "name": "timepicki",
-    "title": "Timepicker jQuery",
+    "title": "Timepicki jQuery Timepicker",
     "description": "Time picki is jQuery plugin for Timepicker set on input filed",
     "keywords": [
         "Timepicker",
         "Timepicki",
         "Time"
     ],
-    "version": "0.1.3",
+    "version": "0.1.4",
     "author": {
         "name": "Developed by Senthil",
         "url": "http://senthilraj.github.io/resume/"
@@ -31,7 +31,6 @@
     "download": "https://github.com/senthilraj/TimePicki#download",
     "demo": "http://senthilraj.github.io/TimePicki/",
     "dependencies": {
-        "jquery": ">=1.x",
-        "jquery": ">=2.x"
+        "jquery": ">=1.x"
     }
 }
