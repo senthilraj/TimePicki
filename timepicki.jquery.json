@@ -29,6 +29,7 @@
     "homepage": "https://github.com/senthilraj/TimePicki",
     "docs": "https://github.com/senthilraj/TimePicki",
     "download": "https://github.com/senthilraj/TimePicki#download",
+    "demo": "http://senthilraj.github.io/TimePicki/",
     "dependencies": {
         "jquery": ">=1.x",
         "jquery": ">=2.x"
