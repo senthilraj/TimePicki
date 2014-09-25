@@ -27,7 +27,8 @@ font-weight: 700;
     border-radius: 5px;
 }
 
-.prev:hover, .next:hover{ background-color:#ccc;}
+ .prev:hover, .next:hover{ background-color:#ccc;}
+ 
 .next{ background-position: 50% 150%;}
 .prev{ background-position: 50% -50%;}
  
