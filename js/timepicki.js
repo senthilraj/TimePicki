@@ -10,7 +10,8 @@
 			format_output: function(tim, mini, meri) {
 				return tim + " : " + mini + " : " + meri;
 			},
-			increase_direction: 'down'
+			increase_direction: 'down',
+			custom_classes: ''
 		};
 
 		var settings = $.extend({}, defaults, options);
@@ -33,7 +34,7 @@
 				"<div class='next action-prev'></div>";
 
 			ele_par.append(
-				"<div class='timepicker_wrap'>" +
+				"<div class='timepicker_wrap " + settings.custom_classes + "'>" +
 					"<div class='arrow_top'></div>" +
 					"<div class='time'>" +
 						top_arrow_button +
@@ -70,22 +71,30 @@
 							ele_next.fadeOut();
 						}
 					} else {
-						set_date();
+						set_date(settings.start_time);
 						ele_next.fadeIn();
 					}
 				}
 			});
 
-			function set_date() {
-				var d = new Date();
-				var ti = d.getHours();
-				var mi = d.getMinutes();
-				var mer = "AM";
-				if (12 < ti) {
-					ti -= 12;
-					mer = "PM";
+			function set_date(start_time) {
+
+				// developer can specify a custom starting value
+				if (typeof start_time === 'object') {
+					var ti = start_time[0];
+					var mi = start_time[1];
+					var mer = start_time[2];
+				} else {
+					var d = new Date();
+					var ti = d.getHours();
+					var mi = d.getMinutes();
+					var mer = "AM";
+					if (12 < ti) {
+						ti -= 12;
+						mer = "PM";
+					}
 				}
-				//console.log(ele_next);
+
 				if (ti < 10) {
 					ele_next.find(".ti_tx").text("0" + ti);
 				} else {
