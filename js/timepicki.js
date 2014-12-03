@@ -65,6 +65,14 @@
 						var mini = ele_next.find(".mi_tx").text();
 						var meri = ele_next.find(".mer_tx").text();
 						if (tim.length != 0 && mini.length != 0 && meri.length != 0) {
+
+							// store the value so we can set the initial value
+							// next time the picker is opened
+							ele.attr('data-timepicki-tim', tim);
+							ele.attr('data-timepicki-mini', mini);
+							ele.attr('data-timepicki-meri', meri);
+
+							// set the formatted value
 							ele.val(settings.format_output(tim, mini, meri));
 						}
 						if (!$(event.target).is(ele_next) && !$(event.target).is(ele_next_all_child)) {
@@ -79,11 +87,19 @@
 
 			function set_date(start_time) {
 
+				// if a value was already picked we will remember that value
+				if (ele.is('[data-timepicki-tim]')) {
+					var ti = Number(ele.attr('data-timepicki-tim'));
+					var mi = Number(ele.attr('data-timepicki-mini'));
+					var mer = ele.attr('data-timepicki-meri');
+
 				// developer can specify a custom starting value
-				if (typeof start_time === 'object') {
-					var ti = start_time[0];
-					var mi = start_time[1];
+				} else if (typeof start_time === 'object') {
+					var ti = Number(start_time[0]);
+					var mi = Number(start_time[1]);
 					var mer = start_time[2];
+
+				// default is we will use the current time
 				} else {
 					var d = new Date();
 					var ti = d.getHours();
