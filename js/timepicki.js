@@ -11,7 +11,9 @@
 				return tim + " : " + mini + " : " + meri;
 			},
 			increase_direction: 'down',
-			custom_classes: ''
+			custom_classes: '',
+			min_hour_value: 1,
+			max_hour_value: 12
 		};
 
 		var settings = $.extend({}, defaults, options);
@@ -218,35 +220,41 @@
 			}
 
 			function change_time(cur_ele, direction) {
-				var cur_cli = null;
-				var ele_st = 0;
-				var ele_en = 0;
-				cur_cli = "time";
-				ele_en = 12;
+				var cur_cli = "time";
 				var cur_time = null;
 				cur_time = ele_next.find("." + cur_cli + " .ti_tx input").val();
 				cur_time = Number(cur_time);
 				if ((cur_ele && cur_ele.hasClass('action-next')) || direction === 'next') {
-					if (cur_time == 12) {
-						ele_next.find("." + cur_cli + " .ti_tx input").val("01");
+					if (cur_time == settings.max_hour_value) {
+						var min_value = Number(settings.min_hour_value);
+						if (min_value < 10) {
+							min_value = '0' + min_value;
+						} else {
+							min_value = String(min_value);
+						}
+						ele_next.find("." + cur_cli + " .ti_tx input").val(min_value);
 					} else {
 						cur_time++;
 						if (cur_time < 10) {
-							ele_next.find("." + cur_cli + " .ti_tx input").val("0" + cur_time);
-						} else {
-							ele_next.find("." + cur_cli + " .ti_tx input").val(cur_time);
+							cur_time = "0" + cur_time;
 						}
+						ele_next.find("." + cur_cli + " .ti_tx input").val(cur_time);
 					}
 				} else if ((cur_ele && cur_ele.hasClass('action-prev')) || direction === 'prev') {
-					if (cur_time == 1) {
-						ele_next.find("." + cur_cli + " .ti_tx input").val(12);
+					if (cur_time == settings.min_hour_value) {
+						var max_value = settings.max_hour_value;
+						if (max_value < 10) {
+							max_value = '0' + max_value;
+						} else {
+							max_value = String(max_value);
+						}
+						ele_next.find("." + cur_cli + " .ti_tx input").val(max_value);
 					} else {
 						cur_time--;
 						if (cur_time < 10) {
-							ele_next.find("." + cur_cli + " .ti_tx input").val("0" + cur_time);
-						} else {
-							ele_next.find("." + cur_cli + " .ti_tx input").val(cur_time);
+							cur_time = "0" + cur_time;
 						}
+						ele_next.find("." + cur_cli + " .ti_tx input").val(cur_time);
 					}
 				}
 			}
