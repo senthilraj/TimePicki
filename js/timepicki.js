@@ -83,11 +83,40 @@
 				}
 			});
 
+			// allow user to increase and decrease numbers using arrow keys
+			inputs.on('keydown', function(e) {
+				var direction, input = $(this);
+
+				// UP
+				if (e.which === 38) {
+					if (settings.increase_direction === 'down') {
+						direction = 'prev';
+					} else {
+						direction = 'next';
+					}
+				// DOWN
+				} else if (e.which === 40) {
+					if (settings.increase_direction === 'down') {
+						direction = 'next';
+					} else {
+						direction = 'prev';
+					}
+				}
+
+				if (input.closest('.timepicker_wrap .time').length) {
+					change_time(null, direction);
+				} else if (input.closest('.timepicker_wrap .mins').length) {
+					change_mins(null, direction);
+				} else if (input.closest('.timepicker_wrap .meridian').length) {
+					change_meri(null, direction);
+				}
+			});
+
 			// close the modal when the time picker loses keyboard focus
 			inputs.on('blur', function() {
 				setTimeout(function() {
 					var focused_element = $(document.activeElement);
-					if (!is_element_in_timepicki(focused_element)) {
+					if (focused_element.is(':input') && !is_element_in_timepicki(focused_element)) {
 						set_value();
 						close_timepicki();
 					}
@@ -145,25 +174,26 @@
 			}
 
 			function set_date(start_time) {
+				var d, ti, mi, mer;
 
 				// if a value was already picked we will remember that value
 				if (ele.is('[data-timepicki-tim]')) {
-					var ti = Number(ele.attr('data-timepicki-tim'));
-					var mi = Number(ele.attr('data-timepicki-mini'));
-					var mer = ele.attr('data-timepicki-meri');
+					ti = Number(ele.attr('data-timepicki-tim'));
+					mi = Number(ele.attr('data-timepicki-mini'));
+					mer = ele.attr('data-timepicki-meri');
 
 				// developer can specify a custom starting value
 				} else if (typeof start_time === 'object') {
-					var ti = Number(start_time[0]);
-					var mi = Number(start_time[1]);
-					var mer = start_time[2];
+					ti = Number(start_time[0]);
+					mi = Number(start_time[1]);
+					mer = start_time[2];
 
 				// default is we will use the current time
 				} else {
-					var d = new Date();
-					var ti = d.getHours();
-					var mi = d.getMinutes();
-					var mer = "AM";
+					d = new Date();
+					ti = d.getHours();
+					mi = d.getMinutes();
+					mer = "AM";
 					if (12 < ti) {
 						ti -= 12;
 						mer = "PM";
@@ -187,110 +217,109 @@
 				}
 			}
 
-
-			var cur_next = ele_next.find(".action-next");
-			var cur_prev = ele_next.find(".action-prev");
-
-
-			$(cur_prev).add(cur_next).on("click", function() {
-				//console.log("click");
-				var cur_ele = $(this);
+			function change_time(cur_ele, direction) {
 				var cur_cli = null;
 				var ele_st = 0;
 				var ele_en = 0;
-				if (cur_ele.parent().attr("class") == "time") {
-					//alert("time");
-					cur_cli = "time";
-					ele_en = 12;
-					var cur_time = null;
-					cur_time = ele_next.find("." + cur_cli + " .ti_tx input").val();
-					cur_time = Number(cur_time);
-					//console.log(ele_next.find("." + cur_cli + " .ti_tx"));
-					if ($(cur_ele).hasClass('action-next')) {
-						//alert("nex");
-						if (cur_time == 12) {
-							ele_next.find("." + cur_cli + " .ti_tx input").val("01");
-						} else {
-							cur_time++;
-
-							if (cur_time < 10) {
-								ele_next.find("." + cur_cli + " .ti_tx input").val("0" + cur_time);
-							} else {
-								ele_next.find("." + cur_cli + " .ti_tx input").val(cur_time);
-							}
-						}
-
+				cur_cli = "time";
+				ele_en = 12;
+				var cur_time = null;
+				cur_time = ele_next.find("." + cur_cli + " .ti_tx input").val();
+				cur_time = Number(cur_time);
+				if ((cur_ele && cur_ele.hasClass('action-next')) || direction === 'next') {
+					if (cur_time == 12) {
+						ele_next.find("." + cur_cli + " .ti_tx input").val("01");
 					} else {
-						if (cur_time == 1) {
-							ele_next.find("." + cur_cli + " .ti_tx input").val(12);
+						cur_time++;
+						if (cur_time < 10) {
+							ele_next.find("." + cur_cli + " .ti_tx input").val("0" + cur_time);
 						} else {
-							cur_time--;
-							if (cur_time < 10) {
-								ele_next.find("." + cur_cli + " .ti_tx input").val("0" + cur_time);
-							} else {
-								ele_next.find("." + cur_cli + " .ti_tx input").val(cur_time);
-							}
+							ele_next.find("." + cur_cli + " .ti_tx input").val(cur_time);
 						}
 					}
-
-				} else if (cur_ele.parent().attr("class") == "mins") {
-					//alert("mins");
-					cur_cli = "mins";
-					ele_en = 59;
-					var cur_mins = null;
-					cur_mins = ele_next.find("." + cur_cli + " .mi_tx input").val();
-					cur_mins = parseInt(cur_mins);
-					if ($(cur_ele).hasClass('action-next')) {
-						//alert("nex");
-						if (cur_mins == 59) {
-							ele_next.find("." + cur_cli + " .mi_tx input").val("00");
-						} else {
-							cur_mins++;
-							if (cur_mins < 10) {
-								ele_next.find("." + cur_cli + " .mi_tx input").val("0" + cur_mins);
-							} else {
-								ele_next.find("." + cur_cli + " .mi_tx input").val(cur_mins);
-							}
-						}
+				} else if ((cur_ele && cur_ele.hasClass('action-prev')) || direction === 'prev') {
+					if (cur_time == 1) {
+						ele_next.find("." + cur_cli + " .ti_tx input").val(12);
 					} else {
-
-						if (cur_mins == 0) {
-							ele_next.find("." + cur_cli + " .mi_tx input").val(59);
+						cur_time--;
+						if (cur_time < 10) {
+							ele_next.find("." + cur_cli + " .ti_tx input").val("0" + cur_time);
 						} else {
-							cur_mins--;
-
-							if (cur_mins < 10) {
-								ele_next.find("." + cur_cli + " .mi_tx input").val("0" + cur_mins);
-							} else {
-								ele_next.find("." + cur_cli + " .mi_tx input").val(cur_mins);
-							}
-
-						}
-
-					}
-				} else {
-					//alert("merdian");
-					ele_en = 1;
-					cur_cli = "meridian";
-					var cur_mer = null;
-					cur_mer = ele_next.find("." + cur_cli + " .mer_tx input").val();
-					if ($(cur_ele).hasClass('action-next')) {
-						//alert(cur_mer);
-						if (cur_mer == "AM") {
-							ele_next.find("." + cur_cli + " .mer_tx input").val("PM");
-						} else {
-							ele_next.find("." + cur_cli + " .mer_tx input").val("AM");
-						}
-					} else {
-						if (cur_mer == "AM") {
-							ele_next.find("." + cur_cli + " .mer_tx input").val("PM");
-						} else {
-							ele_next.find("." + cur_cli + " .mer_tx input").val("AM");
+							ele_next.find("." + cur_cli + " .ti_tx input").val(cur_time);
 						}
 					}
 				}
+			}
 
+			function change_mins(cur_ele, direction) {
+				var cur_cli = null;
+				var ele_st = 0;
+				var ele_en = 0;
+				cur_cli = "mins";
+				ele_en = 59;
+				var cur_mins = null;
+				cur_mins = ele_next.find("." + cur_cli + " .mi_tx input").val();
+				cur_mins = Number(cur_mins);
+				if ((cur_ele && cur_ele.hasClass('action-next')) || direction === 'next') {
+					if (cur_mins == 59) {
+						ele_next.find("." + cur_cli + " .mi_tx input").val("00");
+					} else {
+						cur_mins++;
+						if (cur_mins < 10) {
+							ele_next.find("." + cur_cli + " .mi_tx input").val("0" + cur_mins);
+						} else {
+							ele_next.find("." + cur_cli + " .mi_tx input").val(cur_mins);
+						}
+					}
+				} else if ((cur_ele && cur_ele.hasClass('action-prev')) || direction === 'prev') {
+					if (cur_mins === 0) {
+						ele_next.find("." + cur_cli + " .mi_tx input").val(59);
+					} else {
+						cur_mins--;
+						if (cur_mins < 10) {
+							ele_next.find("." + cur_cli + " .mi_tx input").val("0" + cur_mins);
+						} else {
+							ele_next.find("." + cur_cli + " .mi_tx input").val(cur_mins);
+						}
+					}
+				}
+			}
 
+			function change_meri(cur_ele, direction) {
+				var cur_cli = null;
+				var ele_st = 0;
+				var ele_en = 0;
+				ele_en = 1;
+				cur_cli = "meridian";
+				var cur_mer = null;
+				cur_mer = ele_next.find("." + cur_cli + " .mer_tx input").val();
+				if ((cur_ele && cur_ele.hasClass('action-next')) || direction === 'next') {
+					if (cur_mer == "AM") {
+						ele_next.find("." + cur_cli + " .mer_tx input").val("PM");
+					} else {
+						ele_next.find("." + cur_cli + " .mer_tx input").val("AM");
+					}
+				} else if ((cur_ele && cur_ele.hasClass('action-prev')) || direction === 'prev') {
+					if (cur_mer == "AM") {
+						ele_next.find("." + cur_cli + " .mer_tx input").val("PM");
+					} else {
+						ele_next.find("." + cur_cli + " .mer_tx input").val("AM");
+					}
+				}
+			}
+
+			// handle clicking on the arrow icons
+			var cur_next = ele_next.find(".action-next");
+			var cur_prev = ele_next.find(".action-prev");
+			$(cur_prev).add(cur_next).on("click", function() {
+				var cur_ele = $(this);
+				if (cur_ele.parent().attr("class") == "time") {
+					change_time(cur_ele);
+				} else if (cur_ele.parent().attr("class") == "mins") {
+					change_mins(cur_ele);
+				} else {
+					change_meri(cur_ele);
+				}
 			});
 
 		});
