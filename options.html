@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="favicon.ico">
+
+    <title>TimePicki - options </title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/timepicki.css" rel="stylesheet">
+  </head>
+
+  <body>
+
+    <div class="site-wrapper">
+
+      <div class="site-wrapper-inner">
+
+        <div class="cover-container">
+
+          <div class="masthead clearfix">
+            <div class="inner">
+              <h3 class="masthead-brand">TimePicki v2.0</h3>
+              <nav>
+                <ul class="nav masthead-nav">
+                  <li><a href="index.html">Home</a></li>
+                  <li><a href="features.html">Features</a></li>
+		  <li><a href="howtouse.html">How to use</a></li>
+		  <li class="active"><a href="options.html">Options</a></li>
+                  <li><a href="contact.html">Contact</a></li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+
+          <div class="inner cover height500">
+            <h1 class="cover-heading">Options</h1>
+	    <div class="text-left">
+            	<h3>Increase Decrease direction:</h3>
+		<p>set increase hour or minute direction using increase_direction as 'down' or 'up', default is 'down'.</p>
+		<pre>&lt;script type='text/javascript'&gt; 
+	$('#timepicker1').timepicki({increase_direction:'up'}); 
+&lt;/script&gt;</pre>
+		<input id="timepicker1" type="text" name="timepicker1"/>
+	    </div>
+	    <div class="text-left">
+            	<h3>Minimum hour:</h3>
+		<p>set minimum hour which means we can set minimum value of hour for project requirement, default is 1.</p>
+		<pre>&lt;script type='text/javascript'&gt; 
+	$('#timepicker2').timepicki({min_hour_value:4}); 
+&lt;/script&gt;</pre>
+		<input id="timepicker2" type="text" name="timepicker1"/>
+	    </div>
+	    <div class="text-left">
+            	<h3>Maximum hour:</h3>
+		<p>also can set maximum hour same like minimum hour, default is 12.</p>
+		<pre>&lt;script type='text/javascript'&gt; 
+	$('#timepicker3').timepicki({max_hour_value:8}); 
+&lt;/script&gt;</pre>
+		<input id="timepicker3" type="text" name="timepicker1"/>
+	    </div>
+	    <div class="text-left">
+            	<h3>Add custom class</h3>
+		<p>add custom class name in timepicki for our own like css purpose.</p>
+		<pre>&lt;script type='text/javascript'&gt; 
+	$('#timepicker4').timepicki({custom_classes:"myclass"});
+&lt;/script&gt;</pre>
+		<input id="timepicker4" type="text" name="timepicker1"/>
+                <p>for example here i added myclass for timepicki, then set color:#5CB85C for .myclass class's child inputs.</p>
+	    </div>
+            <p class="lead text-right">
+              <a href="contact.html" class="btn btn-sm btn-success">Any queries?</a>
+              <a href="https://github.com/senthilraj/TimePicki" class="btn btn-sm btn-success">Download</a>
+            </p>
+          </div>
+
+          <div class="mastfoot">
+            <div class="inner">
+              <p>Copyrights <a href="https://github.com/senthilraj/TimePicki">@Timepicki</a>, by <a href="https://twitter.com/senthil2rajan">@senthil2rajan</a>.</p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="js/jquery.min.js"></script>
+    <script src="js/timepicki.js"></script>
+    <script>
+    	$('#timepicker1').timepicki({increase_direction:'up'});
+ 	$('#timepicker2').timepicki({min_hour_value:4}); 
+	$('#timepicker3').timepicki({max_hour_value:8}); 
+	$('#timepicker4').timepicki({custom_classes:"myclass"});
+    </script>
+    <script src="js/bootstrap.min.js"></script>
+  </body>
+</html>
+

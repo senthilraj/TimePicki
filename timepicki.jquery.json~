@@ -1,0 +1,36 @@
+{
+    "name": "timepicki",
+    "title": "Timepicki jQuery Timepicker",
+    "description": "Time picki is jQuery plugin for Timepicker set on input filed",
+    "keywords": [
+        "Timepicker",
+        "Timepicki",
+        "Time"
+    ],
+    "version": "0.1.4",
+    "author": {
+        "name": "Developed by Senthil",
+        "url": "http://senthilraj.github.io/resume/"
+    },
+    "maintainers": [
+        {
+            "name": "senthil kumar",
+            "email": "senthil2rajan@gmail.com",
+            "url": "http://senthilraj.github.io/resume/"
+        }
+    ],
+    "licenses": [
+        {
+            "type": "MIT",
+            "url": "https://github.com/senthilraj/TimePicki/LICENSE.txt"
+        }
+    ],
+    "bugs": "https://github.com/senthilraj/TimePicki/issues",
+    "homepage": "https://github.com/senthilraj/TimePicki",
+    "docs": "https://github.com/senthilraj/TimePicki",
+    "download": "https://github.com/senthilraj/TimePicki#download",
+    "demo": "http://senthilraj.github.io/TimePicki/",
+    "dependencies": {
+        "jquery": ">=1.x"
+    }
+}
