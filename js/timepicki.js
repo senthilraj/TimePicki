@@ -32,7 +32,6 @@
 
 			var ele = $(this);
 			var ele_hei = ele.outerHeight();
-			var ele_lef = ele.pageX - ele.offset().left;
 			ele_hei += 10;
 			$(ele).wrap("<div class='time_pick'>");
 			var ele_par = $(this).parents(".time_pick");
@@ -69,13 +68,8 @@
 			ele_par.append(new_ele);
 			var ele_next = $(this).next(".timepicker_wrap");
 			var ele_next_all_child = ele_next.find("div");
-			ele_next.css({
-				"top": ele_hei + "px",
-				"left": ele_lef + "px"
-			});
-
 			var inputs = ele_par.find('input');
-
+						
 			$(".timepicki-input").keydown( function(keyevent){
 					var len = $(this).val().length;
 
@@ -102,6 +96,12 @@
 					if (!$(event.target).is(ele)) {
 						set_value(event, !is_element_in_timepicki($(event.target)));
 					} else {
+						var ele_lef =  0;
+						
+						ele_next.css({
+							"top": ele_hei + "px",
+							"left": ele_lef + "px"
+						});
 						open_timepicki();
 					}
 				}

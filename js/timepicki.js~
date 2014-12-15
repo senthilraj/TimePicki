@@ -9,12 +9,21 @@
 
 		var defaults = {
 			format_output: function(tim, mini, meri) {
-				return tim + " : " + mini + " : " + meri;
+				if(settings.show_meridian){
+					return tim + " : " + mini + " : " + meri;
+				}else{
+					return tim + " : " + mini;
+				}
 			},
 			increase_direction: 'down',
 			custom_classes: '',
 			min_hour_value: 1,
-			max_hour_value: 12
+			max_hour_value: 12,
+			show_meridian: true,
+			step_size_hours: '1',
+			step_size_minutes: '1',
+			overflow_minutes: false,
+			disable_keyboard_mobile: false,
 		};
 
 		var settings = $.extend({}, defaults, options);
@@ -23,7 +32,6 @@
 
 			var ele = $(this);
 			var ele_hei = ele.outerHeight();
-			var ele_lef = ele.pageX - ele.offset().left;
 			ele_hei += 10;
 			$(ele).wrap("<div class='time_pick'>");
 			var ele_par = $(this).parents(".time_pick");
@@ -36,34 +44,32 @@
 				"<div class='next action-next'></div>" :
 				"<div class='next action-prev'></div>";
 
-			ele_par.append(
+			var new_ele = $(
 				"<div class='timepicker_wrap " + settings.custom_classes + "'>" +
 					"<div class='arrow_top'></div>" +
 					"<div class='time'>" +
 						top_arrow_button +
-						"<div class='ti_tx'><input type='text' class='timepicki-input'></div>" +
+						"<div class='ti_tx'><input type='text' class='timepicki-input'" + (settings.disable_keyboard_mobile ? "readonly" : "") + "></div>" +
 						bottom_arrow_button +
 					"</div>" +
 					"<div class='mins'>" +
 						top_arrow_button +
-						"<div class='mi_tx'><input type='text' class='timepicki-input'></div>" +
+						"<div class='mi_tx'><input type='text' class='timepicki-input'" + (settings.disable_keyboard_mobile ? "readonly" : "") + "></div>" +
 						bottom_arrow_button +
-					"</div>" +
+					"</div>");
+			if(settings.show_meridian){
+				new_ele.append(
 					"<div class='meridian'>" +
 						top_arrow_button +
 						"<div class='mer_tx'><input type='text' class='timepicki-input' readonly></div>" +
 						bottom_arrow_button +
-					"</div>" +
-				"</div>");
+					"</div>");
+			}
+			ele_par.append(new_ele);
 			var ele_next = $(this).next(".timepicker_wrap");
 			var ele_next_all_child = ele_next.find("div");
-			ele_next.css({
-				"top": ele_hei + "px",
-				"left": ele_lef + "px"
-			});
-
 			var inputs = ele_par.find('input');
-
+						
 			$(".timepicki-input").keydown( function(keyevent){
 					var len = $(this).val().length;
 
@@ -90,6 +96,12 @@
 					if (!$(event.target).is(ele)) {
 						set_value(event, !is_element_in_timepicki($(event.target)));
 					} else {
+						var ele_lef =  0;
+						
+						ele_next.css({
+							"top": ele_hei + "px",
+							"left": ele_lef + "px"
+						});
 						open_timepicki();
 					}
 				}
@@ -130,7 +142,7 @@
 					change_time(null, direction);
 				} else if (input.closest('.timepicker_wrap .mins').length) {
 					change_mins(null, direction);
-				} else if (input.closest('.timepicker_wrap .meridian').length) {
+				} else if (input.closest('.timepicker_wrap .meridian').length && settings.show_meridian) {
 					change_meri(null, direction);
 				}
 			});
@@ -154,17 +166,24 @@
 				// use input values to set the time
 				var tim = ele_next.find(".ti_tx input").val();
 				var mini = ele_next.find(".mi_tx input").val();
-				var meri = ele_next.find(".mer_tx input").val();
-
-				if (tim.length !== 0 && mini.length !== 0 && meri.length !== 0) {
+				var meri = "";
+				if(settings.show_meridian){
+					meri = ele_next.find(".mer_tx input").val();
+				}
+				
+				if (tim.length !== 0 && mini.length !== 0 && (!settings.show_meridian || meri.length !== 0)) {
 					// store the value so we can set the initial value
 					// next time the picker is opened
 					ele.attr('data-timepicki-tim', tim);
 					ele.attr('data-timepicki-mini', mini);
-					ele.attr('data-timepicki-meri', meri);
-
-					// set the formatted value
-					ele.val(settings.format_output(tim, mini, meri));
+					
+					if(settings.show_meridian){
+						ele.attr('data-timepicki-meri', meri);
+						// set the formatted value
+						ele.val(settings.format_output(tim, mini, meri));
+					}else{
+						ele.val(settings.format_output(tim, mini));
+					}
 				}
 
 				if (close) {
@@ -203,21 +222,23 @@
 				if (ele.is('[data-timepicki-tim]')) {
 					ti = Number(ele.attr('data-timepicki-tim'));
 					mi = Number(ele.attr('data-timepicki-mini'));
-					mer = ele.attr('data-timepicki-meri');
-
+					if(settings.show_meridian){
+						mer = ele.attr('data-timepicki-meri');
+					}
 				// developer can specify a custom starting value
 				} else if (typeof start_time === 'object') {
 					ti = Number(start_time[0]);
 					mi = Number(start_time[1]);
-					mer = start_time[2];
-
+					if(settings.show_meridian){
+						mer = start_time[2];
+					}
 				// default is we will use the current time
 				} else {
 					d = new Date();
 					ti = d.getHours();
 					mi = d.getMinutes();
 					mer = "AM";
-					if (12 < ti) {
+					if (12 < ti  && settings.show_meridian) {
 						ti -= 12;
 						mer = "PM";
 					}
@@ -233,21 +254,24 @@
 				} else {
 					ele_next.find(".mi_tx input").val(mi);
 				}
-				if (mer < 10) {
-					ele_next.find(".mer_tx input").val("0" + mer);
-				} else {
-					ele_next.find(".mer_tx input").val(mer);
+				if(settings.show_meridian){
+					if (mer < 10) {
+						ele_next.find(".mer_tx input").val("0" + mer);
+					} else {
+						ele_next.find(".mer_tx input").val(mer);
+					}
 				}
 			}
 
 			function change_time(cur_ele, direction) {
 				var cur_cli = "time";
-				var cur_time = null;
-				cur_time = ele_next.find("." + cur_cli + " .ti_tx input").val();
-				cur_time = Number(cur_time);
+				var cur_time = Number(ele_next.find("." + cur_cli + " .ti_tx input").val());
+				var ele_st = Number(settings.min_hour_value);
+				var ele_en = Number(settings.max_hour_value);
+				var step_size = Number(settings.step_size_hours);
 				if ((cur_ele && cur_ele.hasClass('action-next')) || direction === 'next') {
-					if (cur_time == settings.max_hour_value) {
-						var min_value = Number(settings.min_hour_value);
+					if (cur_time + step_size > ele_en) {
+						var min_value = ele_st;
 						if (min_value < 10) {
 							min_value = '0' + min_value;
 						} else {
@@ -255,15 +279,15 @@
 						}
 						ele_next.find("." + cur_cli + " .ti_tx input").val(min_value);
 					} else {
-						cur_time++;
+						cur_time = cur_time + step_size;
 						if (cur_time < 10) {
 							cur_time = "0" + cur_time;
 						}
 						ele_next.find("." + cur_cli + " .ti_tx input").val(cur_time);
 					}
 				} else if ((cur_ele && cur_ele.hasClass('action-prev')) || direction === 'prev') {
-					if (cur_time == settings.min_hour_value) {
-						var max_value = settings.max_hour_value;
+					if (cur_time - step_size <= ele_st) {
+						var max_value = ele_en;
 						if (max_value < 10) {
 							max_value = '0' + max_value;
 						} else {
@@ -271,7 +295,7 @@
 						}
 						ele_next.find("." + cur_cli + " .ti_tx input").val(max_value);
 					} else {
-						cur_time--;
+						cur_time = cur_time - step_size;
 						if (cur_time < 10) {
 							cur_time = "0" + cur_time;
 						}
@@ -281,19 +305,19 @@
 			}
 
 			function change_mins(cur_ele, direction) {
-				var cur_cli = null;
+				var cur_cli = "mins";
+				var cur_mins = Number(ele_next.find("." + cur_cli + " .mi_tx input").val());
 				var ele_st = 0;
-				var ele_en = 0;
-				cur_cli = "mins";
-				ele_en = 59;
-				var cur_mins = null;
-				cur_mins = ele_next.find("." + cur_cli + " .mi_tx input").val();
-				cur_mins = Number(cur_mins);
+				var ele_en = 59;
+				var step_size = Number(settings.step_size_minutes);
 				if ((cur_ele && cur_ele.hasClass('action-next')) || direction === 'next') {
-					if (cur_mins == 59) {
+					if (cur_mins + step_size > ele_en) {
 						ele_next.find("." + cur_cli + " .mi_tx input").val("00");
+						if(settings.overflow_minutes){
+							change_time(null, 'next');
+						}
 					} else {
-						cur_mins++;
+						cur_mins = cur_mins + step_size;
 						if (cur_mins < 10) {
 							ele_next.find("." + cur_cli + " .mi_tx input").val("0" + cur_mins);
 						} else {
@@ -301,10 +325,13 @@
 						}
 					}
 				} else if ((cur_ele && cur_ele.hasClass('action-prev')) || direction === 'prev') {
-					if (cur_mins === 0) {
-						ele_next.find("." + cur_cli + " .mi_tx input").val(59);
+					if (cur_mins - step_size <= ele_st) {
+						ele_next.find("." + cur_cli + " .mi_tx input").val(ele_en + 1 - step_size);
+						if(settings.overflow_minutes){
+							change_time(null, 'prev');
+						}
 					} else {
-						cur_mins--;
+						cur_mins = cur_mins - step_size;
 						if (cur_mins < 10) {
 							ele_next.find("." + cur_cli + " .mi_tx input").val("0" + cur_mins);
 						} else {
@@ -315,11 +342,9 @@
 			}
 
 			function change_meri(cur_ele, direction) {
-				var cur_cli = null;
+				var cur_cli = "meridian";
 				var ele_st = 0;
-				var ele_en = 0;
-				ele_en = 1;
-				cur_cli = "meridian";
+				var ele_en = 1;
 				var cur_mer = null;
 				cur_mer = ele_next.find("." + cur_cli + " .mer_tx input").val();
 				if ((cur_ele && cur_ele.hasClass('action-next')) || direction === 'next') {
@@ -347,7 +372,9 @@
 				} else if (cur_ele.parent().attr("class") == "mins") {
 					change_mins(cur_ele);
 				} else {
-					change_meri(cur_ele);
+					if(settings.show_meridian){
+						change_meri(cur_ele);
+					}
 				}
 			});
 

@@ -15,7 +15,7 @@
 
     <!-- Custom styles for this template -->
     <link href="css/style.css" rel="stylesheet">
-
+    <link href="css/timepicki.css" rel="stylesheet">
   </head>
 
   <body>
@@ -41,9 +41,10 @@
             </div>
           </div>
 
-          <div class="inner cover">
+          <div class="inner cover indexpicker">
             <h1 class="cover-heading">Timepicki v2.0</h1>
             <p class="lead">Timepicki is a light weight jQuery Time Picker plugin for using in form submission websites. User can easily pick time in the form with using it.</p>
+	    <input id="timepicker1" type="text" name="timepicker1"/>
             <p class="lead">
               <a href="features.html" class="btn btn-lg btn-success">Learn more</a>
             </p>
@@ -65,6 +66,10 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="js/jquery.min.js"></script>
+    <script src="js/timepicki.js"></script>
+    <script>
+	$('#timepicker1').timepicki();
+    </script>
     <script src="js/bootstrap.min.js"></script>
   </body>
 </html>
