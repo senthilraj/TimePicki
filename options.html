@@ -46,7 +46,7 @@
 	    <div class="text-left">
             	<h3>Increase Decrease direction:</h3>
 		<p>set increase hour or minute direction using increase_direction as 'down' or 'up', default is 'down'.</p>
-		<pre>&lt;script type='text/javascript'&gt; 
+		<pre>&lt;script type='text/javascript'&gt;
 	$('#timepicker1').timepicki({increase_direction:'up'}); 
 &lt;/script&gt;</pre>
 		<input id="timepicker1" type="text" name="timepicker1"/>
@@ -54,27 +54,68 @@
 	    <div class="text-left">
             	<h3>Minimum hour:</h3>
 		<p>set minimum hour which means we can set minimum value of hour for project requirement, default is 1.</p>
-		<pre>&lt;script type='text/javascript'&gt; 
+		<pre>&lt;script type='text/javascript'&gt;
 	$('#timepicker2').timepicki({min_hour_value:4}); 
 &lt;/script&gt;</pre>
-		<input id="timepicker2" type="text" name="timepicker1"/>
+		<input id="timepicker2" type="text" name="timepicker2"/>
 	    </div>
 	    <div class="text-left">
             	<h3>Maximum hour:</h3>
 		<p>also can set maximum hour same like minimum hour, default is 12.</p>
-		<pre>&lt;script type='text/javascript'&gt; 
+		<pre>&lt;script type='text/javascript'&gt;
 	$('#timepicker3').timepicki({max_hour_value:8}); 
 &lt;/script&gt;</pre>
-		<input id="timepicker3" type="text" name="timepicker1"/>
+		<input id="timepicker3" type="text" name="timepicker3"/>
 	    </div>
 	    <div class="text-left">
             	<h3>Add custom class</h3>
 		<p>add custom class name in timepicki for our own like css purpose.</p>
-		<pre>&lt;script type='text/javascript'&gt; 
+		<pre>&lt;script type='text/javascript'&gt;
 	$('#timepicker4').timepicki({custom_classes:"myclass"});
 &lt;/script&gt;</pre>
-		<input id="timepicker4" type="text" name="timepicker1"/>
+		<input id="timepicker4" type="text" name="timepicker4"/>
                 <p>for example here i added myclass for timepicki, then set color:#5CB85C for .myclass class's child inputs.</p>
+	    </div>
+		<div class="text-left">
+        <h3>Don't use Meridian (AM/PM) indication</h3>
+		<p>with this option you can choose to hide the AM/PM selector. Ideal if you want a 24 hour clock.</p>
+		<pre>&lt;script type='text/javascript'&gt;
+	$('#timepicker5').timepicki({show_meridian:false});
+&lt;/script&gt;</pre>
+		<input id="timepicker5" type="text" name="timepicker5"/>
+	    </div>
+		<div class="text-left">
+		<h3>Set step size hour and minutes</h3>
+		<p>with this option you can choose the step size with which minutes and hours have to increase or decrease.</p>
+		<pre>&lt;script type='text/javascript'&gt;
+	$('#timepicker6').timepicki({step_size_hour:2,step_size_min:15});
+&lt;/script&gt;</pre>
+		<input id="timepicker6" type="text" name="timepicker6"/>
+		<p>here the minutes are changed per quarter instead of per minute, and the hours will be changed per two.</p>
+	    </div>
+		<div class="text-left">
+		<h3>Overflow minutes to hour counter</h3>
+		<p>with this option you can choose that hours will be updated if we go over the maximum/minimum of the minutes counter. Changed step size for minutes as well for illustrative purposes.</p>
+		<pre>&lt;script type='text/javascript'&gt;
+	$('#timepicker7').timepicki({overflow_minutes:true, step_size_min:15});
+&lt;/script&gt;</pre>
+		<input id="timepicker7" type="text" name="timepicker7"/>
+	    </div>
+		<div class="text-left">
+		<h3>Indicate start time</h3>
+		<p>set the start time</p>
+		<pre>&lt;script type='text/javascript'&gt;
+	$('#timepicker8').timepicki({start_time: ["06", "00", "AM"]});
+&lt;/script&gt;</pre>
+		<input id="timepicker8" type="text" name="timepicker8"/>
+	    </div>
+		<div class="text-left">
+		<h3>Full 24-Hour example</h3>
+		<p>more elaborate example of 24 Hour clock.</p>
+		<pre>&lt;script type='text/javascript'&gt;
+	$('#timepicker9').timepicki({show_meridian:false, min_hour_value:0, max_hour_value:23, step_size_min:15, overflow_minutes:true, increase_direction:'up'});
+&lt;/script&gt;</pre>
+		<input id="timepicker9" type="text" name="timepicker8"/>
 	    </div>
             <p class="lead text-right">
               <a href="contact.html" class="btn btn-sm btn-success">Any queries?</a>
@@ -100,10 +141,15 @@
     <script src="js/jquery.min.js"></script>
     <script src="js/timepicki.js"></script>
     <script>
-    	$('#timepicker1').timepicki({increase_direction:'up'});
- 	$('#timepicker2').timepicki({min_hour_value:4}); 
+	$('#timepicker1').timepicki({increase_direction:'up'});
+	$('#timepicker2').timepicki({min_hour_value:4});
 	$('#timepicker3').timepicki({max_hour_value:8}); 
 	$('#timepicker4').timepicki({custom_classes:"myclass"});
+	$('#timepicker5').timepicki({show_meridian:false});
+	$('#timepicker6').timepicki({step_size_hour:2, step_size_min:15});
+	$('#timepicker7').timepicki({overflow_minutes:true, step_size_min:15});
+	$('#timepicker8').timepicki({start_time: ["06", "00", "AM"]});
+	$('#timepicker9').timepicki({show_meridian:false, min_hour_value:0, max_hour_value:23, step_size_min:15, overflow_minutes:true, increase_direction:'up'});
     </script>
     <script src="js/bootstrap.min.js"></script>
   </body>
