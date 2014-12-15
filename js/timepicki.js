@@ -9,17 +9,20 @@
 
 		var defaults = {
 			format_output: function(tim, mini, meri) {
-				return tim + " : " + mini + " : " + meri;
+				if(settings.show_meridian){
+					return tim + " : " + mini + " : " + meri;
+				}else{
+					return tim + " : " + mini;
+				}
 			},
-			start_time: ["06", "00", "AM"],
 			increase_direction: 'down',
-			step_size_hour: '1',
-			step_size_min: '1',
 			custom_classes: '',
 			min_hour_value: 1,
 			max_hour_value: 12,
-			overflow_minutes: true,
-			meridian: true
+			show_meridian: true,
+			step_size_hour: '1',
+			step_size_min: '1',
+			overflow_minutes: false,
 		};
 
 		var settings = $.extend({}, defaults, options);
@@ -54,7 +57,7 @@
 						"<div class='mi_tx'><input type='text' class='timepicki-input'></div>" +
 						bottom_arrow_button +
 					"</div>");
-			if(settings.meridian){
+			if(settings.show_meridian){
 				new_ele.append(
 					"<div class='meridian'>" +
 						top_arrow_button +
@@ -138,7 +141,7 @@
 					change_time(null, direction);
 				} else if (input.closest('.timepicker_wrap .mins').length) {
 					change_mins(null, direction);
-				} else if (input.closest('.timepicker_wrap .meridian').length && settings.meridian) {
+				} else if (input.closest('.timepicker_wrap .meridian').length && settings.show_meridian) {
 					change_meri(null, direction);
 				}
 			});
@@ -163,17 +166,17 @@
 				var tim = ele_next.find(".ti_tx input").val();
 				var mini = ele_next.find(".mi_tx input").val();
 				var meri = "";
-				if(settings.meridian){
+				if(settings.show_meridian){
 					meri = ele_next.find(".mer_tx input").val();
 				}
 				
-				if (tim.length !== 0 && mini.length !== 0 && (!settings.meridian || meri.length !== 0)) {
+				if (tim.length !== 0 && mini.length !== 0 && (!settings.show_meridian || meri.length !== 0)) {
 					// store the value so we can set the initial value
 					// next time the picker is opened
 					ele.attr('data-timepicki-tim', tim);
 					ele.attr('data-timepicki-mini', mini);
 					
-					if(settings.meridian){
+					if(settings.show_meridian){
 						ele.attr('data-timepicki-meri', meri);
 						// set the formatted value
 						ele.val(settings.format_output(tim, mini, meri));
@@ -218,14 +221,14 @@
 				if (ele.is('[data-timepicki-tim]')) {
 					ti = Number(ele.attr('data-timepicki-tim'));
 					mi = Number(ele.attr('data-timepicki-mini'));
-					if(settings.meridian){
+					if(settings.show_meridian){
 						mer = ele.attr('data-timepicki-meri');
 					}
 				// developer can specify a custom starting value
 				} else if (typeof start_time === 'object') {
 					ti = Number(start_time[0]);
 					mi = Number(start_time[1]);
-					if(settings.meridian){
+					if(settings.show_meridian){
 						mer = start_time[2];
 					}
 				// default is we will use the current time
@@ -250,7 +253,7 @@
 				} else {
 					ele_next.find(".mi_tx input").val(mi);
 				}
-				if(settings.meridian){
+				if(settings.show_meridian){
 					if (mer < 10) {
 						ele_next.find(".mer_tx input").val("0" + mer);
 					} else {
@@ -265,7 +268,7 @@
 				cur_time = ele_next.find("." + cur_cli + " .ti_tx input").val();
 				cur_time = Number(cur_time);
 				if ((cur_ele && cur_ele.hasClass('action-next')) || direction === 'next') {
-					if (cur_time == settings.max_hour_value) {
+					if (cur_time + Number(settings.step_size_hour) >= settings.max_hour_value) {
 						var min_value = Number(settings.min_hour_value);
 						if (min_value < 10) {
 							min_value = '0' + min_value;
@@ -281,7 +284,7 @@
 						ele_next.find("." + cur_cli + " .ti_tx input").val(cur_time);
 					}
 				} else if ((cur_ele && cur_ele.hasClass('action-prev')) || direction === 'prev') {
-					if (cur_time == settings.min_hour_value) {
+					if (cur_time - Number(settings.step_size_hour) <= settings.min_hour_value) {
 						var max_value = settings.max_hour_value;
 						if (max_value < 10) {
 							max_value = '0' + max_value;
@@ -371,7 +374,7 @@
 				} else if (cur_ele.parent().attr("class") == "mins") {
 					change_mins(cur_ele);
 				} else {
-					if(settings.meridian){
+					if(settings.show_meridian){
 						change_meri(cur_ele);
 					}
 				}
