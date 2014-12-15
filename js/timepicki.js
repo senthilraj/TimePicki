@@ -269,7 +269,7 @@
 				var ele_en = Number(settings.max_hour_value);
 				var step_size = Number(settings.step_size_hours);
 				if ((cur_ele && cur_ele.hasClass('action-next')) || direction === 'next') {
-					if (cur_time + step_size >= ele_en) {
+					if (cur_time + step_size > ele_en) {
 						var min_value = ele_st;
 						if (min_value < 10) {
 							min_value = '0' + min_value;
