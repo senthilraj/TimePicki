@@ -11,10 +11,15 @@
 			format_output: function(tim, mini, meri) {
 				return tim + " : " + mini + " : " + meri;
 			},
+			start_time: ["06", "00", "AM"],
 			increase_direction: 'down',
+			step_size_hour: '1',
+			step_size_min: '1',
 			custom_classes: '',
 			min_hour_value: 1,
-			max_hour_value: 12
+			max_hour_value: 12,
+			overflow_minutes: true,
+			meridian: true
 		};
 
 		var settings = $.extend({}, defaults, options);
@@ -36,7 +41,7 @@
 				"<div class='next action-next'></div>" :
 				"<div class='next action-prev'></div>";
 
-			ele_par.append(
+			var new_ele = $(
 				"<div class='timepicker_wrap " + settings.custom_classes + "'>" +
 					"<div class='arrow_top'></div>" +
 					"<div class='time'>" +
@@ -48,13 +53,16 @@
 						top_arrow_button +
 						"<div class='mi_tx'><input type='text' class='timepicki-input'></div>" +
 						bottom_arrow_button +
-					"</div>" +
+					"</div>");
+			if(settings.meridian){
+				new_ele.append(
 					"<div class='meridian'>" +
 						top_arrow_button +
-						"<div class='mer_tx'><input type='text' class='timepicki-input' readonly></div>" +
+						"<div class='mer_tx'><input type='text' class='timepicki-input'></div>" +
 						bottom_arrow_button +
-					"</div>" +
-				"</div>");
+					"</div>");
+			}
+			ele_par.append(new_ele);
 			var ele_next = $(this).next(".timepicker_wrap");
 			var ele_next_all_child = ele_next.find("div");
 			ele_next.css({
@@ -83,7 +91,7 @@
 					}
 
 			});
-
+			
 			// open or close time picker when clicking
 			$(document).on("click", function(event) {
 				if (!$(event.target).is(ele_next)) {
@@ -130,7 +138,7 @@
 					change_time(null, direction);
 				} else if (input.closest('.timepicker_wrap .mins').length) {
 					change_mins(null, direction);
-				} else if (input.closest('.timepicker_wrap .meridian').length) {
+				} else if (input.closest('.timepicker_wrap .meridian').length && settings.meridian) {
 					change_meri(null, direction);
 				}
 			});
@@ -154,17 +162,24 @@
 				// use input values to set the time
 				var tim = ele_next.find(".ti_tx input").val();
 				var mini = ele_next.find(".mi_tx input").val();
-				var meri = ele_next.find(".mer_tx input").val();
-
-				if (tim.length !== 0 && mini.length !== 0 && meri.length !== 0) {
+				var meri = "";
+				if(settings.meridian){
+					meri = ele_next.find(".mer_tx input").val();
+				}
+				
+				if (tim.length !== 0 && mini.length !== 0 && (!settings.meridian || meri.length !== 0)) {
 					// store the value so we can set the initial value
 					// next time the picker is opened
 					ele.attr('data-timepicki-tim', tim);
 					ele.attr('data-timepicki-mini', mini);
-					ele.attr('data-timepicki-meri', meri);
-
-					// set the formatted value
-					ele.val(settings.format_output(tim, mini, meri));
+					
+					if(settings.meridian){
+						ele.attr('data-timepicki-meri', meri);
+						// set the formatted value
+						ele.val(settings.format_output(tim, mini, meri));
+					}else{
+						ele.val(settings.format_output(tim, mini));
+					}
 				}
 
 				if (close) {
@@ -203,14 +218,16 @@
 				if (ele.is('[data-timepicki-tim]')) {
 					ti = Number(ele.attr('data-timepicki-tim'));
 					mi = Number(ele.attr('data-timepicki-mini'));
-					mer = ele.attr('data-timepicki-meri');
-
+					if(settings.meridian){
+						mer = ele.attr('data-timepicki-meri');
+					}
 				// developer can specify a custom starting value
 				} else if (typeof start_time === 'object') {
 					ti = Number(start_time[0]);
 					mi = Number(start_time[1]);
-					mer = start_time[2];
-
+					if(settings.meridian){
+						mer = start_time[2];
+					}
 				// default is we will use the current time
 				} else {
 					d = new Date();
@@ -233,10 +250,12 @@
 				} else {
 					ele_next.find(".mi_tx input").val(mi);
 				}
-				if (mer < 10) {
-					ele_next.find(".mer_tx input").val("0" + mer);
-				} else {
-					ele_next.find(".mer_tx input").val(mer);
+				if(settings.meridian){
+					if (mer < 10) {
+						ele_next.find(".mer_tx input").val("0" + mer);
+					} else {
+						ele_next.find(".mer_tx input").val(mer);
+					}
 				}
 			}
 
@@ -255,7 +274,7 @@
 						}
 						ele_next.find("." + cur_cli + " .ti_tx input").val(min_value);
 					} else {
-						cur_time++;
+						cur_time = cur_time + Number(settings.step_size_hour);
 						if (cur_time < 10) {
 							cur_time = "0" + cur_time;
 						}
@@ -271,7 +290,7 @@
 						}
 						ele_next.find("." + cur_cli + " .ti_tx input").val(max_value);
 					} else {
-						cur_time--;
+						cur_time = cur_time - Number(settings.step_size_hour);
 						if (cur_time < 10) {
 							cur_time = "0" + cur_time;
 						}
@@ -283,17 +302,19 @@
 			function change_mins(cur_ele, direction) {
 				var cur_cli = null;
 				var ele_st = 0;
-				var ele_en = 0;
+				var ele_en = 59;
 				cur_cli = "mins";
-				ele_en = 59;
 				var cur_mins = null;
 				cur_mins = ele_next.find("." + cur_cli + " .mi_tx input").val();
 				cur_mins = Number(cur_mins);
 				if ((cur_ele && cur_ele.hasClass('action-next')) || direction === 'next') {
-					if (cur_mins == 59) {
+					if (cur_mins + Number(settings.step_size_min) >= 60) {
 						ele_next.find("." + cur_cli + " .mi_tx input").val("00");
+						if(settings.overflow_minutes){
+							change_time(null, 'next');
+						}
 					} else {
-						cur_mins++;
+						cur_mins = cur_mins + Number(settings.step_size_min);
 						if (cur_mins < 10) {
 							ele_next.find("." + cur_cli + " .mi_tx input").val("0" + cur_mins);
 						} else {
@@ -301,10 +322,13 @@
 						}
 					}
 				} else if ((cur_ele && cur_ele.hasClass('action-prev')) || direction === 'prev') {
-					if (cur_mins === 0) {
-						ele_next.find("." + cur_cli + " .mi_tx input").val(59);
+					if (cur_mins - Number(settings.step_size_min) <= 0) {
+						ele_next.find("." + cur_cli + " .mi_tx input").val(60 - Number(settings.step_size_min));
+						if(settings.overflow_minutes){
+							change_time(null, 'prev');
+						}
 					} else {
-						cur_mins--;
+						cur_mins = cur_mins - Number(settings.step_size_min);
 						if (cur_mins < 10) {
 							ele_next.find("." + cur_cli + " .mi_tx input").val("0" + cur_mins);
 						} else {
@@ -347,7 +371,9 @@
 				} else if (cur_ele.parent().attr("class") == "mins") {
 					change_mins(cur_ele);
 				} else {
-					change_meri(cur_ele);
+					if(settings.meridian){
+						change_meri(cur_ele);
+					}
 				}
 			});
 
