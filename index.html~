@@ -41,7 +41,7 @@
             </div>
           </div>
 
-          <div class="inner cover indexpicker">
+          <div class="inner cover">
             <h1 class="cover-heading">Timepicki v2.0</h1>
             <p class="lead">Timepicki is a light weight jQuery Time Picker plugin for using in form submission websites. User can easily pick time in the form with using it.</p>
 	    <input id="timepicker1" type="text" name="timepicker1"/>
