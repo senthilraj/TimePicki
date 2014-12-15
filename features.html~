@@ -41,37 +41,45 @@
             </div>
           </div>
 
-          <div class="inner cover">
-            <h1 class="cover-heading">Features</h1>
-            <dl class="dl-horizontal">
-	    	<dt>Easy to use</dt>
-		<dd>Developer can easy to use timepicker in them website using lightweight timepicki.js and timepicki.css</dd>
-	    </dl>
-	    <dl class="dl-horizontal">
-	    	<dt>Access with keys</dt>
-		<dd>User also pick time use Arrow key via keyboard, and also move like hour to minute field using Tab key</dd>
-	    </dl>
-	    <dl class="dl-horizontal">
-	    	<dt>Set time limit</dt>
-		<dd>Developer can set hour or minute limit based them project for example time 01 clock to 05 clock only</dd>
-	    </dl>
-	    <dl class="dl-horizontal">
-	    	<dt>Change arrow direction</dt>
-		<dd>Developer can set arrow operation direction like increment or decrement time</dd>
-	    </dl>
-	    <dl class="dl-horizontal">
-	    	<dt>User can type time</dt>
-		<dd>In timepicki user can also type hour or minute via keyboard</dd>
-	    </dl>
-	    <dl class="dl-horizontal">
-	    	<dt>Clean UI</dt>
-		<dd>Timepicki simple and cleas User interface, so user can easily understand and use it</dd>
-	    </dl>
-            <p class="lead text-right">
-              <a href="howtouse.html" class="btn btn-sm btn-success">Start to use</a>
-              <a href="https://github.com/senthilraj/TimePicki" class="btn btn-sm btn-success">Download</a>
-            </p>
-          </div>
+          <div class="inner cover height500">
+			<h1 class="cover-heading">Features</h1>
+			<dl class="dl-horizontal">
+				<dt>Easy to use</dt>
+				<dd>Developers can easily implement timepicker in a website using the lightweight timepicki.js and timepicki.css</dd>
+			</dl>
+			<dl class="dl-horizontal">
+				<dt>24H &amp; AM/PM notation</dt>
+				<dd>Timepicki allows to use a 24-hour or 12-hour (with AM/PM notation) based clock</dd>
+			</dl>
+			<dl class="dl-horizontal">
+				<dt>Access with keys</dt>
+				<dd>Users are able to choose time using the Arrow keys on the keyboard, and can also move from hour to minute field using the Tab key.</dd>
+			</dl>
+			<dl class="dl-horizontal">
+				<dt>Set time limit</dt>
+				<dd>Developers are able to set an hour or minute limit for their project. For example time from 1 to 5 o'clock only</dd>
+			</dl>
+			<dl class="dl-horizontal">
+				<dt>Set step size</dt>
+				<dd>Developers are able to choose the step size with which hours and minutes are incremented/decremented.</dd>
+			</dl>
+			<dl class="dl-horizontal">
+				<dt>Change arrow direction</dt>
+				<dd>Developer can determine which arrow increments or decrements the time</dd>
+			</dl>
+			<dl class="dl-horizontal">
+				<dt>User can type time</dt>
+				<dd>In timepicki users can also type hour or minute via keyboard. Allthough it's possible to disable this for mobile use, to prevent keyboard from showing up.</dd>
+			</dl>
+			<dl class="dl-horizontal">
+				<dt>Clean UI</dt>
+				<dd>Timepicki has a simple and clean User interface, so users can easily understand and use it</dd>
+			</dl>
+			<p class="lead text-right">
+				<a href="howtouse.html" class="btn btn-sm btn-success">Start to use</a>
+				<a href="https://github.com/senthilraj/TimePicki" class="btn btn-sm btn-success">Download</a>
+			</p>
+		  </div>
 
           <div class="mastfoot">
             <div class="inner">
