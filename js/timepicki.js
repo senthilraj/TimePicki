@@ -20,8 +20,8 @@
 			min_hour_value: 1,
 			max_hour_value: 12,
 			show_meridian: true,
-			step_size_hour: '1',
-			step_size_min: '1',
+			step_size_hours: '1',
+			step_size_minutes: '1',
 			overflow_minutes: false,
 		};
 
@@ -61,7 +61,7 @@
 				new_ele.append(
 					"<div class='meridian'>" +
 						top_arrow_button +
-						"<div class='mer_tx'><input type='text' class='timepicki-input'></div>" +
+						"<div class='mer_tx'><input type='text' class='timepicki-input' readonly></div>" +
 						bottom_arrow_button +
 					"</div>");
 			}
@@ -94,7 +94,7 @@
 					}
 
 			});
-			
+
 			// open or close time picker when clicking
 			$(document).on("click", function(event) {
 				if (!$(event.target).is(ele_next)) {
@@ -264,12 +264,13 @@
 
 			function change_time(cur_ele, direction) {
 				var cur_cli = "time";
-				var cur_time = null;
-				cur_time = ele_next.find("." + cur_cli + " .ti_tx input").val();
-				cur_time = Number(cur_time);
+				var cur_time = Number(ele_next.find("." + cur_cli + " .ti_tx input").val());
+				var ele_st = Number(settings.min_hour_value);
+				var ele_en = Number(settings.max_hour_value);
+				var step_size = Number(settings.step_size_hours);
 				if ((cur_ele && cur_ele.hasClass('action-next')) || direction === 'next') {
-					if (cur_time + Number(settings.step_size_hour) >= settings.max_hour_value) {
-						var min_value = Number(settings.min_hour_value);
+					if (cur_time + step_size >= ele_en) {
+						var min_value = ele_st;
 						if (min_value < 10) {
 							min_value = '0' + min_value;
 						} else {
@@ -277,15 +278,15 @@
 						}
 						ele_next.find("." + cur_cli + " .ti_tx input").val(min_value);
 					} else {
-						cur_time = cur_time + Number(settings.step_size_hour);
+						cur_time = cur_time + step_size;
 						if (cur_time < 10) {
 							cur_time = "0" + cur_time;
 						}
 						ele_next.find("." + cur_cli + " .ti_tx input").val(cur_time);
 					}
 				} else if ((cur_ele && cur_ele.hasClass('action-prev')) || direction === 'prev') {
-					if (cur_time - Number(settings.step_size_hour) <= settings.min_hour_value) {
-						var max_value = settings.max_hour_value;
+					if (cur_time - step_size <= ele_st) {
+						var max_value = ele_en;
 						if (max_value < 10) {
 							max_value = '0' + max_value;
 						} else {
@@ -293,7 +294,7 @@
 						}
 						ele_next.find("." + cur_cli + " .ti_tx input").val(max_value);
 					} else {
-						cur_time = cur_time - Number(settings.step_size_hour);
+						cur_time = cur_time - step_size;
 						if (cur_time < 10) {
 							cur_time = "0" + cur_time;
 						}
@@ -303,21 +304,19 @@
 			}
 
 			function change_mins(cur_ele, direction) {
-				var cur_cli = null;
+				var cur_cli = "mins";
+				var cur_mins = Number(ele_next.find("." + cur_cli + " .mi_tx input").val());
 				var ele_st = 0;
 				var ele_en = 59;
-				cur_cli = "mins";
-				var cur_mins = null;
-				cur_mins = ele_next.find("." + cur_cli + " .mi_tx input").val();
-				cur_mins = Number(cur_mins);
+				var step_size = Number(settings.step_size_minutes);
 				if ((cur_ele && cur_ele.hasClass('action-next')) || direction === 'next') {
-					if (cur_mins + Number(settings.step_size_min) >= 60) {
+					if (cur_mins + step_size > ele_en) {
 						ele_next.find("." + cur_cli + " .mi_tx input").val("00");
 						if(settings.overflow_minutes){
 							change_time(null, 'next');
 						}
 					} else {
-						cur_mins = cur_mins + Number(settings.step_size_min);
+						cur_mins = cur_mins + step_size;
 						if (cur_mins < 10) {
 							ele_next.find("." + cur_cli + " .mi_tx input").val("0" + cur_mins);
 						} else {
@@ -325,13 +324,13 @@
 						}
 					}
 				} else if ((cur_ele && cur_ele.hasClass('action-prev')) || direction === 'prev') {
-					if (cur_mins - Number(settings.step_size_min) <= 0) {
-						ele_next.find("." + cur_cli + " .mi_tx input").val(60 - Number(settings.step_size_min));
+					if (cur_mins - step_size <= ele_st) {
+						ele_next.find("." + cur_cli + " .mi_tx input").val(ele_en + 1 - step_size);
 						if(settings.overflow_minutes){
 							change_time(null, 'prev');
 						}
 					} else {
-						cur_mins = cur_mins - Number(settings.step_size_min);
+						cur_mins = cur_mins - step_size;
 						if (cur_mins < 10) {
 							ele_next.find("." + cur_cli + " .mi_tx input").val("0" + cur_mins);
 						} else {
@@ -342,11 +341,9 @@
 			}
 
 			function change_meri(cur_ele, direction) {
-				var cur_cli = null;
+				var cur_cli = "meridian";
 				var ele_st = 0;
-				var ele_en = 0;
-				ele_en = 1;
-				cur_cli = "meridian";
+				var ele_en = 1;
 				var cur_mer = null;
 				cur_mer = ele_next.find("." + cur_cli + " .mer_tx input").val();
 				if ((cur_ele && cur_ele.hasClass('action-next')) || direction === 'next') {
