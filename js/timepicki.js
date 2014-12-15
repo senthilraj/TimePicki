@@ -23,6 +23,7 @@
 			step_size_hours: '1',
 			step_size_minutes: '1',
 			overflow_minutes: false,
+			disable_keyboard_mobile: false,
 		};
 
 		var settings = $.extend({}, defaults, options);
@@ -49,12 +50,12 @@
 					"<div class='arrow_top'></div>" +
 					"<div class='time'>" +
 						top_arrow_button +
-						"<div class='ti_tx'><input type='text' class='timepicki-input'></div>" +
+						"<div class='ti_tx'><input type='text' class='timepicki-input'" + (settings.disable_keyboard_mobile ? "readonly" : "") + "></div>" +
 						bottom_arrow_button +
 					"</div>" +
 					"<div class='mins'>" +
 						top_arrow_button +
-						"<div class='mi_tx'><input type='text' class='timepicki-input'></div>" +
+						"<div class='mi_tx'><input type='text' class='timepicki-input'" + (settings.disable_keyboard_mobile ? "readonly" : "") + "></div>" +
 						bottom_arrow_button +
 					"</div>");
 			if(settings.show_meridian){
