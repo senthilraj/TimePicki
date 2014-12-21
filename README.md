@@ -34,7 +34,7 @@ How to use
 ```
 features and options
 ====================
-if you need to know about timepicki features and options, ###[Click here](http://senthilraj.github.io/TimePicki/)
+if you need to know about timepicki features and options to [Click here](http://senthilraj.github.io/TimePicki/)
 ## Demo
 
 ###[Click to see Demo](http://senthilraj.github.io/TimePicki/)
