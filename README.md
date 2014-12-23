@@ -42,7 +42,7 @@ if you need to know about timepicki features and options to [Click here](http://
 
 ## Download
 
-### Download [ScrollNaviJs zip archive](https://github.com/senthilraj/TimePicki/archive/master.zip)
+### Download [Timepicki zip archive](https://github.com/senthilraj/TimePicki/archive/master.zip)
 
 
 About me
