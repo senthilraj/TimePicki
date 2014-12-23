@@ -182,3 +182,6 @@ input[type='text'] {
 	display:inline-block;
 }
 .indexpicker .time_pick > input { width:100%; margin-bottom:20px;}
+.lead a {
+	text-decoration:underline;
+}
