@@ -119,13 +119,21 @@
 		<pre>&lt;script type='text/javascript'&gt;
 	$('#timepicker9').timepicki({disable_keyboard_mobile: true});
 &lt;/script&gt;</pre>
-		<input id="timepicker9" type="text" name="timepicker8"/>
+		<input id="timepicker9" type="text" name="timepicker9"/>
+	    </div>
+	    <div class="text-left">
+		<h3>Reset</h3>
+		<p>if want to reset time in input, to enable reset option</p>
+		<pre>&lt;script type='text/javascript'&gt;
+	$('#timepicker10').timepicki({reset: true});
+&lt;/script&gt;</pre>
+		<input id="timepicker10" type="text" name="timepicker10"/>
 	    </div>
 		<div class="text-left">
 		<h3>Full 24-Hour example</h3>
 		<p>more elaborate example of 24 Hour clock.</p>
 		<pre>&lt;script type='text/javascript'&gt;
-	$('#timepicker10').timepicki({
+	$('#timepicker11').timepicki({
 		show_meridian:false,
 		min_hour_value:0,
 		max_hour_value:23,
@@ -134,7 +142,7 @@
 		increase_direction:'up',
 		disable_keyboard_mobile: true});
 &lt;/script&gt;</pre>
-		<input id="timepicker10" type="text" name="timepicker8"/>
+		<input id="timepicker11" type="text" name="timepicker11"/>
 	    </div>
             <p class="lead text-right">
               <a href="contact.html" class="btn btn-sm btn-success">Any queries?</a>
@@ -173,7 +181,8 @@
 		step_size_minutes:15});
 	$('#timepicker8').timepicki({start_time: ["06", "00", "AM"]});
 	$('#timepicker9').timepicki({disable_keyboard_mobile: true});
-	$('#timepicker10').timepicki({
+	$('#timepicker10').timepicki({reset:true});
+	$('#timepicker11').timepicki({
 		show_meridian:false,
 		min_hour_value:0,
 		max_hour_value:23,
