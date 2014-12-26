@@ -123,7 +123,7 @@
 	    </div>
 	    <div class="text-left">
 		<h3>Reset</h3>
-		<p>if want to reset time in input, to enable reset option</p>
+		<p>if want to reset time in input to enable reset option</p>
 		<pre>&lt;script type='text/javascript'&gt;
 	$('#timepicker10').timepicki({reset: true});
 &lt;/script&gt;</pre>

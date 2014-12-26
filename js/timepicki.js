@@ -24,6 +24,7 @@
 			step_size_minutes: '1',
 			overflow_minutes: false,
 			disable_keyboard_mobile: false,
+			reset: false
 		};
 
 		var settings = $.extend({}, defaults, options);
@@ -65,11 +66,19 @@
 						bottom_arrow_button +
 					"</div>");
 			}
+			if(settings.reset){
+				new_ele.append(
+					"<div><a href='#' class='reset_time'>Reset</a></div>");
+			}
 			ele_par.append(new_ele);
 			var ele_next = $(this).next(".timepicker_wrap");
 			var ele_next_all_child = ele_next.find("div");
 			var inputs = ele_par.find('input');
-						
+			
+			$('.reset_time').on("click", function(event) {
+				ele.val("");
+				close_timepicki();
+			});		
 			$(".timepicki-input").keydown( function(keyevent){
 					var len = $(this).val().length;
 
@@ -92,7 +101,7 @@
 
 			// open or close time picker when clicking
 			$(document).on("click", function(event) {
-				if (!$(event.target).is(ele_next)) {
+				if (!$(event.target).is(ele_next) && ele_next.css("display")=="block" && !$(event.target).is($('.reset_time'))) {
 					if (!$(event.target).is(ele)) {
 						set_value(event, !is_element_in_timepicki($(event.target)));
 					} else {
