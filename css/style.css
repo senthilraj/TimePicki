@@ -185,3 +185,6 @@ input[type='text'] {
 .lead a.profile {
 	text-decoration:underline;
 }
+.font14 {
+	font-size:14px !important;
+}
