@@ -295,7 +295,7 @@
 						ele_next.find("." + cur_cli + " .ti_tx input").val(cur_time);
 					}
 				} else if ((cur_ele && cur_ele.hasClass('action-prev')) || direction === 'prev') {
-					if (cur_time - step_size <= ele_st) {
+					if (cur_time - step_size <= 0) {
 						var max_value = ele_en;
 						if (max_value < 10) {
 							max_value = '0' + max_value;
@@ -334,7 +334,7 @@
 						}
 					}
 				} else if ((cur_ele && cur_ele.hasClass('action-prev')) || direction === 'prev') {
-					if (cur_mins - step_size <= ele_st) {
+					if (cur_mins - step_size <= -1) {
 						ele_next.find("." + cur_cli + " .mi_tx input").val(ele_en + 1 - step_size);
 						if(settings.overflow_minutes){
 							change_time(null, 'prev');
