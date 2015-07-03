@@ -1,0 +1,22 @@
+{
+  "name": "timepicki",
+  "version": "2.0.0",
+  "description": "Timepicki - free Time picker jquery plugin, it is simple and clean timepicker so user can understand to set time for your project in input forms.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/awHamer/TimePicki.git"
+  },
+  "keywords": [
+    "timepicker"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/awHamer/TimePicki/issues"
+  },
+  "homepage": "https://github.com/awHamer/TimePicki#readme"
+}
