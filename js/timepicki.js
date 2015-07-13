@@ -24,7 +24,8 @@
 			step_size_minutes: '1',
 			overflow_minutes: false,
 			disable_keyboard_mobile: false,
-			reset: false
+			reset: false,
+			on_change: null
 		};
 
 		var settings = $.extend({}, defaults, options);
@@ -193,6 +194,11 @@
 					}else{
 						ele.val(settings.format_output(tim, mini));
 					}
+				}
+
+				//Call user on_change callback function if set
+				if (settings.on_change !== null) {
+					settings.on_change(ele[0]);
 				}
 
 				if (close) {
