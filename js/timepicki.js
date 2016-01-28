@@ -295,7 +295,8 @@
 						ele_next.find("." + cur_cli + " .ti_tx input").val(cur_time);
 					}
 				} else if ((cur_ele && cur_ele.hasClass('action-prev')) || direction === 'prev') {
-					if (cur_time - step_size <= 0) {
+					var minValue = Number(settings.min_hour_value)
+					if (cur_time - step_size < minValue) {
 						var max_value = ele_en;
 						if (max_value < 10) {
 							max_value = '0' + max_value;
