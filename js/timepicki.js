@@ -77,7 +77,7 @@
 			var inputs = ele_par.find('input');
 			
 			$('.reset_time').on("click", function(event) {
-				ele.val("");
+				$(this).parents('.time_pick').find('.text').val("");
 				close_timepicki();
 			});		
 			$(".timepicki-input").keydown( function(keyevent){
