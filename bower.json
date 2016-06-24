@@ -1,0 +1,24 @@
+{
+  "name": "TimePicki",
+  "version": "1.0.2",
+  "main": [
+    "css/timepicki.css",
+    "images/arrow.png",
+    "images/top_arr.png",
+    "js/timepicki.js"
+  ],
+  "authors": [
+    "TimePicki"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
