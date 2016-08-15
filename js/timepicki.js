@@ -405,9 +405,15 @@
 					ti = d.getHours();
 					mi = d.getMinutes();
 					mer = "AM";
-					if (12 < ti  && settings.show_meridian) {
-						ti -= 12;
-						mer = "PM";
+					if (settings.show_meridian){
+						if (ti == 0) { // midnight 
+							ti = 12;
+						} else if (ti == 12) { // noon
+							mer = "PM";
+						} else if (ti > 12) {
+							ti -= 12;
+							mer = "PM";
+						}
 					}
 				}
 
