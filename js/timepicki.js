@@ -59,7 +59,7 @@
 			var ele = $(this);
 			var ele_hei = ele.outerHeight();
 			ele_hei += 10;
-			$(ele).wrap("<div class='time_pick'>");
+			$(ele).wrap("<div class='timepicki time_pick'>");
 			var ele_par = $(this).parents(".time_pick");
 
 			// developer can specify which arrow makes the numbers go up or down
