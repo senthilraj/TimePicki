@@ -24,8 +24,9 @@ Author: senthil
 	font-weight: 700;
 }
 
-.prev,
-.next {
+/* added div.timepicker_wrap due to conflict with BootStrap DatePicker */
+div.timepicker_wrap .prev,
+div.timepicker_wrap .next {
 	cursor: pointer;
 	padding: 18px;
 	width: 28%;
@@ -35,16 +36,19 @@ Author: senthil
 	border-radius: 5px;
 }
 
-.prev:hover,
-.next:hover {
+/* added div.timepicker_wrap due to conflict with BootStrap DatePicker */
+div.timepicker_wrap .prev:hover,
+div.timepicker_wrap .next:hover {
 	background-color: #ccc;
 }
 
-.next {
+/* added div.timepicker_wrap due to conflict with BootStrap DatePicker */
+div.timepicker_wrap .next {
 	background-position: 50% 150%;
 }
 
-.prev {
+/* added div.timepicker_wrap due to conflict with BootStrap DatePicker */
+div.timepicker_wrap .prev {
 	background-position: 50% -50%;
 }
 
