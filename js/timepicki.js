@@ -11,12 +11,12 @@
 			format_output: function(tim, mini, meri) {
 			    if (settings.show_meridian) {
                     // limit hours between 1 and 12 - inculsive.
-			        tim = Math.min(Math.max(parseInt(tim), 1), 12);
+			        tim = Math.min(Math.max(parseInt(tim,10), 1), 12);
 			        if (tim < 10)
 			            tim = "0" + tim;
 
 			        
-			        mini = Math.min(Math.max(parseInt(mini), 0), 59);
+			        mini = Math.min(Math.max(parseInt(mini,10), 0), 59);
 			        if (mini < 10)
 			            mini = "0" + mini;
 
@@ -24,17 +24,17 @@
 			    } else {
 
 			        // limit hours between 0 and 23 - inculsive.
-			        tim = Math.min(Math.max(parseInt(tim), 0), 23);
+			        tim = Math.min(Math.max(parseInt(tim,10), 0), 23);
 
 			        if (tim < 10)
 			            tim = "0" + tim;
 
 
-			        mini = Math.min(Math.max(parseInt(mini), 0), 59);
+			        mini = Math.min(Math.max(parseInt(mini,10), 0), 59);
 			        if (mini < 10)
 			            mini = "0" + mini;
 
-			        mini = Math.min(Math.max(parseInt(mini), 0), 59);
+			        mini = Math.min(Math.max(parseInt(mini,10), 0), 59);
 
 					return tim + ":" + mini;
 				}
