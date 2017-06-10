@@ -78,117 +78,63 @@
             var $elementWrapper = $element.next(".timepicker_wrap"),
                 $inputs = $parent.find('input');
 
-            $('.reset_time').on('click', function (event) {
+            $('.reset_time').on('click', function () {
                 $element.val('');
                 closeTimepicki();
             });
 
+            //-----------------------------------------------------------------------------------
+            //  NOTE:.change() event does not work here, as it is called when input looses focus
+            //-----------------------------------------------------------------------------------
             $('.timepicki-input').keydown(function (keyevent) {
-                // our goal here is very simple.
-                // no matter what the user presses
-                // we must ensure that the values in our
-                // timepicki inputs are valid, and that pressing
-                // enter does not submit the form if the
-                // input field on which timepicki is applied is a part of a form.
 
-
-                // With that in mind. We proceed like this:
-                // 1) If enter is pressed:
-                //      i) Prevent default operations - form submission.
-                //      ii) close_timepicki().
-                //      iii) return.
-                //
-                // 2) For any other key presses:
-                //      i) realize that we cannot check what the user has typed
-                //         just yet, because this function is a handler
-                //         that runs before any text is rendered in the input
-                //         box.
-                //      ii) So, register a function validate() that will execute right
-                //          after the keypress character is rendered. All validation
-                //          is done inside validate().
-                //-----------------------------------------------------------------------------------
-                //  NOTE:.change() event does not work here, as it is called when input looses focus|
-                //-----------------------------------------------------------------------------------
-
-                // (1)
-                // prevent potential form submission, if enter is pressed.
+                // enter - prevent form submission and close popup
                 if (keyevent.keyCode === 13) {
                     keyevent.preventDefault();
 
                     setValue();
                     closeTimepicki();
-                    // nothing to do here.
+
                     return;
                 }
 
-                // the grand father div specifies the type of
-                // input that we are dealing with. if the grandFatherDiv
-                // has a class "time", then its a time input, if it has a class
-                // "mins", then its a minutes input, and if it has a class "meridian"
-                // then its a meridian input.
-                var grandfatherDiv = $(this).parent().parent();
+                // the grand father div specifies the type of input that we are dealing with (time/mins/meridian)
+                var $input = $(this),
+                    lastValue = $input.val(),
+                    $grandfatherDiv = $input.parent().parent();
 
-                // aliasing for readability
-                var input = $(this);
-
-                // pick the value from the field,
-                // because before change the field always has a
-                // valid value.
-                var lastValue = input.val();
-
-                // (2)
-                // validate() function validates the
-                // user input.
+                // validate input values
                 function validate() {
-                    var isValidNumber = /^\d+$/.test(input.val()),
-                        isEmpty = input.val() === "";
+                    var isValidNumber = /^\d+$/.test(lastValue),
+                        isEmpty = lastValue === '';
 
-                    if (grandfatherDiv.hasClass("time")) { /// HOUR
-                        // if its a valid number.
-                        // clip it and assign it.
+                    // hours
+                    if ($grandfatherDiv.hasClass('time')) {
                         if (isValidNumber) {
-                            // clip number.
                             var hours = (settings.show_meridian) ?
-                                Math.min(Math.max(parseInt(input.val()), 1), 12) : // for 12 hour date picker.
-                                Math.min(Math.max(parseInt(input.val()), 0), 23); // for 24 hours date picker.
+                                Math.min(Math.max(parseInt(lastValue), 1), 12) :
+                                Math.min(Math.max(parseInt(lastValue), 0), 23);
 
-                            // assign number.
-                            input.val(hours);
+                            $input.val(hours);
                         } else if (!isEmpty) {
-                            // else if the number is invalid and not empty
-                            // assign the lastValue
-                            input.val(lastValue);
+                            $input.val(lastValue);
                         }
-                    } else if (grandfatherDiv.hasClass("mins")) { /// MINUTE
-                        // if its a valid number.
-                        // clip it and assign it.
+                    } else if ($grandfatherDiv.hasClass('mins')) {
                         if (isValidNumber) {
-                            // clip number.
-                            var minutes = Math.min(Math.max(parseInt(input.val()), 0), 59);
+                            var minutes = Math.min(Math.max(parseInt($input.val()), 0), 59);
 
-                            // assign number.
-                            input.val(minutes);
+                            $input.val(minutes);
                         } else if (!isEmpty) {
-                            // else if the number is invalid and not empty
-                            // assign the lastValue
-                            input.val(lastValue);
+                            $input.val(lastValue);
                         }
-                    } else if (grandfatherDiv.hasClass("meridian")) { /// MERIDIAN
-                        // key presses should not affect
-                        // meridian - except up and down
-                        // which are handled else where
-                        // and will still work.
+                    } else if ($grandfatherDiv.hasClass('meridian')) { // MERIDIAN
+                        // key presses should not affect meridian
                         keyevent.preventDefault();
-                    } else {
-                        // alert("This should not happen.");
                     }
-
                 }
 
-                // wrapValidate() ensures that validate()
-                // is not called more than once. 'done'
-                // is a flag used to ensure this.
-                done = false;
+                // wrapValidate() ensures that validate() is called only once
+                var done = false;
                 function wrapValidate() {
                     if (!done) {
                         validate();
@@ -197,24 +143,21 @@
                     }
                 }
 
-                // enqueue wrapValidate function before any thing
-                // else takes place. For this we use setTimeout()
-                // with 0
+                // enqueue wrapValidate function before any thing else takes place
                 setTimeout(wrapValidate, 0);
             });
 
             // open or close time picker when clicking
-            $(document).on("click", function (event) {
-                if (!$(event.target).is($elementWrapper) && $elementWrapper.css("display") == "block" && !$(event.target).is($('.reset_time'))) {
+            $(document).on('click', function (event) {
+                if (!$(event.target).is($elementWrapper) && $elementWrapper.css('display') === 'block' && !$(event.target).is($('.reset_time'))) {
                     if (!$(event.target).is($element)) {
                         setValue(event, !iselementInTimepicki($(event.target)));
                     } else {
-                        var ele_lef = 0;
-
                         $elementWrapper.css({
-                            "top": elementHeight + "px",
-                            "left": ele_lef + "px"
+                            'top': elementHeight + 'px',
+                            'left': '0px'
                         });
+
                         openTimepicki();
                     }
                 }
@@ -235,15 +178,14 @@
             $inputs.on('keydown', function (e) {
                 var direction, input = $(this);
 
-                // UP
+                // arrow key up
                 if (e.which === 38) {
                     if (settings.increase_direction === 'down') {
                         direction = 'prev';
                     } else {
                         direction = 'next';
                     }
-                    // DOWN
-                } else if (e.which === 40) {
+                } else if (e.which === 40) { // arrow key down
                     if (settings.increase_direction === 'down') {
                         direction = 'next';
                     } else {
