@@ -66,11 +66,12 @@
 
             if (settings.showMeridian) {
                 $newElement.append(
-                    '<div class="showMeridian">' +
+                    '<div class="meridian">' +
                     top_arrow_button +
                     '<div class="mer_tx"><input type="text" class="timepicki-input" readonly></div>' +
                     bottom_arrow_button +
-                    '</div>');
+                    '</div>'
+                );
             }
             if (settings.showResetButton) {
                 $newElement.append('<div><a href="#" class="reset_time">Reset</a></div>');
@@ -100,7 +101,7 @@
                     return;
                 }
 
-                // the grand father div specifies the type of input that we are dealing with (time/mins/showMeridian)
+                // the grand father div specifies the type of input that we are dealing with (time/mins/meridian)
                 var $input = $(this),
                     lastValue = $input.val(),
                     $grandfatherDiv = $input.parent().parent();
@@ -129,8 +130,8 @@
                         } else if (!isEmpty) {
                             $input.val(lastValue);
                         }
-                    } else if ($grandfatherDiv.hasClass('showMeridian')) { // MERIDIAN
-                        // key presses should not affect showMeridian
+                    } else if ($grandfatherDiv.hasClass('meridian')) { // MERIDIAN
+                        // key presses should not affect meridian
                         keyevent.preventDefault();
                     }
                 }
@@ -191,7 +192,7 @@
                     changeHours(null, direction);
                 } else if (input.closest('.timepicker_wrap .mins').length) {
                     changeMinutes(null, direction);
-                } else if (input.closest('.timepicker_wrap .showMeridian').length && settings.showMeridian) {
+                } else if (input.closest('.timepicker_wrap .meridian').length && settings.showMeridian) {
                     changeMeridian(null, direction);
                 }
             });
@@ -312,7 +313,6 @@
                 $elementWrapper.find('.mi_tx input').val(minutes);
 
                 if (settings.showMeridian) {
-                    meridian = meridian.leftPad(2);
                     $elementWrapper.find('.mer_tx input').val(meridian);
                 }
             }
@@ -381,7 +381,7 @@
             }
 
             function changeMeridian(cur_ele, direction) {
-                var cur_cli = 'showMeridian',
+                var cur_cli = 'meridian',
                     cur_mer = $elementWrapper.find('.' + cur_cli + ' .mer_tx input').val();
 
                 if ((cur_ele && cur_ele.hasClass('action-next')) || direction === 'next') {
