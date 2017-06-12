@@ -25,7 +25,6 @@
 
                 return hours + ':' + minutes + (settings.show_meridian ? ' ' + meridian : '');
             },
-            increase_direction: 'up',
             custom_classes: '',
             min_hour_value: 1,
             max_hour_value: 12,
@@ -46,11 +45,6 @@
 
             $element.wrap('<div class="time_pick">');
             var $parent = $element.parents('.time_pick');
-
-            if (settings.increase_direction === 'down') {
-                top_arrow_button = '<div class="prev action-prev"></div>';
-                bottom_arrow_button = '<div class="next action-next"></div>';
-            }
 
             var $newElement = $(
                 '<div class="timepicker_wrap ' + settings.custom_classes + '">' +
@@ -91,7 +85,7 @@
             //-----------------------------------------------------------------------------------
             //  NOTE:.change() event does not work here, as it is called when input looses focus
             //-----------------------------------------------------------------------------------
-            $('.timepicki-input').keydown(function (keyevent) {
+            $('.timepicki-input').on('keydown', function (keyevent) {
 
                 // enter - prevent form submission and close popup
                 if (keyevent.keyCode === 13) {
@@ -185,17 +179,9 @@
 
                 // arrow key up
                 if (e.which === 38) {
-                    if (settings.increase_direction === 'down') {
-                        direction = 'prev';
-                    } else {
-                        direction = 'next';
-                    }
+                    direction = 'next';
                 } else if (e.which === 40) { // arrow key down
-                    if (settings.increase_direction === 'down') {
-                        direction = 'next';
-                    } else {
-                        direction = 'prev';
-                    }
+                    direction = 'prev';
                 }
 
                 if (input.closest('.timepicker_wrap .time').length) {
