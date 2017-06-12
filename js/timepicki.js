@@ -1,4 +1,14 @@
 (function ($) {
+    'use strict';
+
+    Number.prototype.leftPad = function (len, pad) {
+        pad = typeof pad === 'undefined' ? '0' : pad + '';
+        var str = this + '';
+        while (str.length < len) {
+            str = pad + str;
+        }
+        return str;
+    };
 
     $.fn.timepicki = function (options) {
         var settings = $.extend({
@@ -8,15 +18,10 @@
                 } else {
                     hours = Math.min(Math.max(parseInt(hours), 0), 23);
                 }
-
-                if (hours < 10) {
-                    hours = '0' + hours;
-                }
-
                 minutes = Math.min(Math.max(parseInt(minutes), 0), 59);
-                if (minutes < 10) {
-                    minutes = '0' + minutes;
-                }
+
+                hours = hours.leftPad(2);
+                minutes = minutes.leftPad(2);
 
                 return hours + ':' + minutes + (settings.show_meridian ? ' ' + meridian : '');
             },
@@ -194,27 +199,28 @@
                 }
 
                 if (input.closest('.timepicker_wrap .time').length) {
-                    changeTime(null, direction);
+                    changeHours(null, direction);
                 } else if (input.closest('.timepicker_wrap .mins').length) {
-                    changeMins(null, direction);
+                    changeMinutes(null, direction);
                 } else if (input.closest('.timepicker_wrap .meridian').length && settings.show_meridian) {
-                    changeMeri(null, direction);
+                    changeMeridian(null, direction);
                 }
             });
 
             // close the modal when the time picker loses keyboard focus
             $inputs.on('blur', function () {
                 setTimeout(function () {
-                    var focused_element = $(document.activeElement);
-                    if (focused_element.is(':input') && !iselementInTimepicki(focused_element)) {
+                    var $focusedElement = $(document.activeElement);
+
+                    if ($focusedElement.is(':input') && !iselementInTimepicki($focusedElement)) {
                         setValue();
                         closeTimepicki();
                     }
                 }, 0);
             });
 
-            function iselementInTimepicki(jquery_element) {
-                return $.contains($parent[0], jquery_element[0]) || $parent.is(jquery_element);
+            function iselementInTimepicki($jqueryElement) {
+                return $.contains($parent[0], $jqueryElement[0]) || $parent.is($jqueryElement);
             }
 
             function setValue(close) {
@@ -313,26 +319,19 @@
                     }
                 }
 
-                if (hours < 10) {
-                    $elementWrapper.find('.ti_tx input').val('0' + hours);
-                } else {
-                    $elementWrapper.find('.ti_tx input').val(hours);
-                }
-                if (minutes < 10) {
-                    $elementWrapper.find('.mi_tx input').val('0' + minutes);
-                } else {
-                    $elementWrapper.find('.mi_tx input').val(minutes);
-                }
+                hours = hours.leftPad(2);
+                $elementWrapper.find('.ti_tx input').val(hours);
+
+                minutes = minutes.leftPad(2);
+                $elementWrapper.find('.mi_tx input').val(minutes);
+
                 if (settings.show_meridian) {
-                    if (meridian < 10) {
-                        $elementWrapper.find('.mer_tx input').val('0' + meridian);
-                    } else {
-                        $elementWrapper.find('.mer_tx input').val(meridian);
-                    }
+                    meridian = meridian.leftPad(2);
+                    $elementWrapper.find('.mer_tx input').val(meridian);
                 }
             }
 
-            function changeTime(currentElement, direction) {
+            function changeHours(currentElement, direction) {
                 var currentClass = 'time',
                     cur_time = Number($elementWrapper.find('.' + currentClass + ' .ti_tx input').val()),
                     ele_st = Number(settings.min_hour_value),
@@ -341,42 +340,30 @@
 
                 if ((currentElement && currentElement.hasClass('action-next')) || direction === 'next') {
                     if (cur_time + stepSize > ele_en) {
-                        var min_value = ele_st;
-                        if (min_value < 10) {
-                            min_value = '0' + min_value;
-                        } else {
-                            min_value = String(min_value);
-                        }
+                        var min_value = ele_st.leftPad(2);
+
                         $elementWrapper.find('.' + currentClass + ' .ti_tx input').val(min_value);
                     } else {
-                        cur_time = cur_time + stepSize;
-                        if (cur_time < 10) {
-                            cur_time = '0' + cur_time;
-                        }
+                        cur_time = (cur_time + stepSize).leftPad(2);
+
                         $elementWrapper.find('.' + currentClass + ' .ti_tx input').val(cur_time);
                     }
                 } else if ((currentElement && currentElement.hasClass('action-prev')) || direction === 'prev') {
                     var minValue = Number(settings.min_hour_value);
 
                     if (cur_time - stepSize < minValue) {
-                        var max_value = ele_en;
-                        if (max_value < 10) {
-                            max_value = '0' + max_value;
-                        } else {
-                            max_value = String(max_value);
-                        }
+                        var max_value = ele_en.leftPad(2);
+
                         $elementWrapper.find('.' + currentClass + ' .ti_tx input').val(max_value);
                     } else {
-                        cur_time = cur_time - stepSize;
-                        if (cur_time < 10) {
-                            cur_time = '0' + cur_time;
-                        }
+                        cur_time = (cur_time - stepSize).leftPad(2);
+
                         $elementWrapper.find('.' + currentClass + ' .ti_tx input').val(cur_time);
                     }
                 }
             }
 
-            function changeMins(cur_ele, direction) {
+            function changeMinutes(cur_ele, direction) {
                 var cur_cli = 'mins',
                     cur_mins = Number($elementWrapper.find('.' + cur_cli + ' .mi_tx input').val()),
                     ele_en = 59,
@@ -386,34 +373,28 @@
                     if (cur_mins + stepSize > ele_en) {
                         $elementWrapper.find('.' + cur_cli + ' .mi_tx input').val('00');
                         if (settings.overflow_minutes) {
-                            changeTime(null, 'next');
+                            changeHours(null, 'next');
                         }
                     } else {
-                        cur_mins = cur_mins + stepSize;
-                        if (cur_mins < 10) {
-                            $elementWrapper.find('.' + cur_cli + ' .mi_tx input').val('0' + cur_mins);
-                        } else {
-                            $elementWrapper.find('.' + cur_cli + ' .mi_tx input').val(cur_mins);
-                        }
+                        cur_mins = (cur_mins + stepSize).leftPad(2);
+
+                        $elementWrapper.find('.' + cur_cli + ' .mi_tx input').val(cur_mins);
                     }
                 } else if ((cur_ele && cur_ele.hasClass('action-prev')) || direction === 'prev') {
                     if (cur_mins - stepSize <= -1) {
                         $elementWrapper.find('.' + cur_cli + ' .mi_tx input').val(ele_en + 1 - stepSize);
                         if (settings.overflow_minutes) {
-                            changeTime(null, 'prev');
+                            changeHours(null, 'prev');
                         }
                     } else {
-                        cur_mins = cur_mins - stepSize;
-                        if (cur_mins < 10) {
-                            $elementWrapper.find('.' + cur_cli + ' .mi_tx input').val('0' + cur_mins);
-                        } else {
-                            $elementWrapper.find('.' + cur_cli + ' .mi_tx input').val(cur_mins);
-                        }
+                        cur_mins = (cur_mins - stepSize).leftPad(2);
+
+                        $elementWrapper.find('.' + cur_cli + ' .mi_tx input').val(cur_mins);
                     }
                 }
             }
 
-            function changeMeri(cur_ele, direction) {
+            function changeMeridian(cur_ele, direction) {
                 var cur_cli = 'meridian',
                     cur_mer = $elementWrapper.find('.' + cur_cli + ' .mer_tx input').val();
 
@@ -438,11 +419,11 @@
                 var $element = $(this);
 
                 if ($element.parent().hasClass('time')) {
-                    changeTime($element);
+                    changeHours($element);
                 } else if ($element.parent().hasClass('mins')) {
-                    changeMins($element);
+                    changeMinutes($element);
                 } else if (settings.show_meridian) {
-                    changeMeri($element);
+                    changeMeridian($element);
                 }
             });
 
