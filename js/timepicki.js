@@ -33,8 +33,7 @@
             step_size_minutes: '1',
             overflow_minutes: false,
             disable_keyboard_mobile: false,
-            reset: false,
-            on_change: null
+            reset: false
         }, options);
 
         return this.each(function () {
@@ -234,10 +233,7 @@
                     }
                 }
 
-                //Call user on_change callback function if set
-                if (settings.on_change !== null) {
-                    settings.on_change($element[0]);
-                }
+                $element.trigger('timepicki.changed', [hoursInputVal, minutesInputVal, meridianInputVal]);
 
                 if (close) {
                     closeTimepicki();
