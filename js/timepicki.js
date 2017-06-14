@@ -43,8 +43,8 @@
         return this.each(function () {
             var $element = $(this),
                 elementHeight = $element.outerHeight() + 10,
-                top_arrow_button = '<div class="prev action-next"></div>',
-                bottom_arrow_button = '<div class="next action-prev"></div>';
+                topArrowButton = '<div class="prev action-next"></div>',
+                bottomArrowButton = '<div class="next action-prev"></div>';
 
             $element.wrap('<div class="time_pick">');
             var $parent = $element.parents('.time_pick');
@@ -53,23 +53,23 @@
                 '<div class="timepicker_wrap ' + settings.className + '">' +
                 '<div class="arrow_top"></div>' +
                 '<div class="time">' +
-                top_arrow_button +
+                topArrowButton +
                 '<div class="ti_tx"><input type="text" class="timepicki-input"' + (settings.disableMobileKeyboard ? 'readonly' : '') + '></div>' +
-                bottom_arrow_button +
+                bottomArrowButton +
                 '</div>' +
                 '<div class="mins">' +
-                top_arrow_button +
+                topArrowButton +
                 '<div class="mi_tx"><input type="text" class="timepicki-input"' + (settings.disableMobileKeyboard ? 'readonly' : '') + '></div>' +
-                bottom_arrow_button +
+                bottomArrowButton +
                 '</div>'
             );
 
             if (settings.showMeridian) {
                 $newElement.append(
                     '<div class="meridian">' +
-                    top_arrow_button +
+                    topArrowButton +
                     '<div class="mer_tx"><input type="text" class="timepicki-input" readonly></div>' +
-                    bottom_arrow_button +
+                    bottomArrowButton +
                     '</div>'
                 );
             }
@@ -249,22 +249,22 @@
                 setDate(settings.start_time);
                 $elementWrapper.fadeIn();
                 // focus on the first input and select its contents
-                var first_input = $elementWrapper.find('input:visible').first();
-                first_input.focus();
+                var firstInput = $elementWrapper.find('input:visible').first();
+                firstInput.focus();
                 // if the user presses shift+tab while on the first input,
                 // they mean to exit the time picker and go to the previous field
                 var first_input_exit_handler = function (e) {
                     if (e.which === 9 && e.shiftKey) {
-                        first_input.off('keydown', first_input_exit_handler);
+                        firstInput.off('keydown', first_input_exit_handler);
 
-                        var all_form_elements = $(':input:visible:not(.timepicki-input)'),
-                            index_of_timepicki_input = all_form_elements.index($element),
-                            previous_form_element = all_form_elements.get(index_of_timepicki_input - 1);
+                        var $allFormElements = $(':input:visible:not(.timepicki-input)'),
+                            timepickiInputIndex = $allFormElements.index($element),
+                            $previousFormElement = $allFormElements.get(timepickiInputIndex - 1);
 
-                        previous_form_element.focus();
+                        $previousFormElement.focus();
                     }
                 };
-                first_input.on('keydown', first_input_exit_handler);
+                firstInput.on('keydown', first_input_exit_handler);
             }
 
             function closeTimepicki() {
@@ -319,82 +319,82 @@
 
             function changeHours(currentElement, direction) {
                 var currentClass = 'time',
-                    cur_time = Number($elementWrapper.find('.' + currentClass + ' .ti_tx input').val()),
-                    ele_st = Number(settings.hours.min),
-                    ele_en = Number(settings.hours.max),
+                    currentHoursValue = Number($elementWrapper.find('.' + currentClass + ' .ti_tx input').val()),
+                    hoursMin = Number(settings.hours.min),
+                    hoursMax = Number(settings.hours.max),
                     stepSize = Number(settings.hours.step);
 
                 if ((currentElement && currentElement.hasClass('action-next')) || direction === 'next') {
-                    if (cur_time + stepSize > ele_en) {
-                        var min_value = ele_st.leftPad(2);
+                    if (currentHoursValue + stepSize > hoursMax) {
+                        var min_value = hoursMin.leftPad(2);
 
                         $elementWrapper.find('.' + currentClass + ' .ti_tx input').val(min_value);
                     } else {
-                        cur_time = (cur_time + stepSize).leftPad(2);
+                        currentHoursValue = (currentHoursValue + stepSize).leftPad(2);
 
-                        $elementWrapper.find('.' + currentClass + ' .ti_tx input').val(cur_time);
+                        $elementWrapper.find('.' + currentClass + ' .ti_tx input').val(currentHoursValue);
                     }
                 } else if ((currentElement && currentElement.hasClass('action-prev')) || direction === 'prev') {
                     var minValue = Number(settings.hours.min);
 
-                    if (cur_time - stepSize < minValue) {
-                        var max_value = ele_en.leftPad(2);
+                    if (currentHoursValue - stepSize < minValue) {
+                        var max_value = hoursMax.leftPad(2);
 
                         $elementWrapper.find('.' + currentClass + ' .ti_tx input').val(max_value);
                     } else {
-                        cur_time = (cur_time - stepSize).leftPad(2);
+                        currentHoursValue = (currentHoursValue - stepSize).leftPad(2);
 
-                        $elementWrapper.find('.' + currentClass + ' .ti_tx input').val(cur_time);
+                        $elementWrapper.find('.' + currentClass + ' .ti_tx input').val(currentHoursValue);
                     }
                 }
             }
 
             function changeMinutes(cur_ele, direction) {
-                var cur_cli = 'mins',
-                    cur_mins = Number($elementWrapper.find('.' + cur_cli + ' .mi_tx input').val()),
-                    ele_en = 59,
+                var currentInputClass = 'mins',
+                    currentMinutesValue = Number($elementWrapper.find('.' + currentInputClass + ' .mi_tx input').val()),
+                    minutesMax = 59,
                     stepSize = Number(settings.minutes.step);
 
                 if ((cur_ele && cur_ele.hasClass('action-next')) || direction === 'next') {
-                    if (cur_mins + stepSize > ele_en) {
-                        $elementWrapper.find('.' + cur_cli + ' .mi_tx input').val('00');
+                    if (currentMinutesValue + stepSize > minutesMax) {
+                        $elementWrapper.find('.' + currentInputClass + ' .mi_tx input').val('00');
                         if (settings.minutes.oveflow) {
                             changeHours(null, 'next');
                         }
                     } else {
-                        cur_mins = (cur_mins + stepSize).leftPad(2);
+                        currentMinutesValue = (currentMinutesValue + stepSize).leftPad(2);
 
-                        $elementWrapper.find('.' + cur_cli + ' .mi_tx input').val(cur_mins);
+                        $elementWrapper.find('.' + currentInputClass + ' .mi_tx input').val(currentMinutesValue);
                     }
                 } else if ((cur_ele && cur_ele.hasClass('action-prev')) || direction === 'prev') {
-                    if (cur_mins - stepSize <= -1) {
-                        $elementWrapper.find('.' + cur_cli + ' .mi_tx input').val(ele_en + 1 - stepSize);
+                    if (currentMinutesValue - stepSize <= -1) {
+                        $elementWrapper.find('.' + currentInputClass + ' .mi_tx input').val(minutesMax + 1 - stepSize);
                         if (settings.minutes.oveflow) {
                             changeHours(null, 'prev');
                         }
                     } else {
-                        cur_mins = (cur_mins - stepSize).leftPad(2);
+                        currentMinutesValue = (currentMinutesValue - stepSize).leftPad(2);
 
-                        $elementWrapper.find('.' + cur_cli + ' .mi_tx input').val(cur_mins);
+                        $elementWrapper.find('.' + currentInputClass + ' .mi_tx input').val(currentMinutesValue);
                     }
                 }
             }
 
             function changeMeridian(cur_ele, direction) {
-                var cur_cli = 'meridian',
-                    cur_mer = $elementWrapper.find('.' + cur_cli + ' .mer_tx input').val();
+                var currentInputClass = 'meridian',
+                    currentMeridianValue = $elementWrapper.find('.' + currentInputClass + ' .mer_tx input').val();
 
                 if ((cur_ele && cur_ele.hasClass('action-next')) || direction === 'next') {
-                    if (cur_mer === 'AM') {
-                        $elementWrapper.find('.' + cur_cli + ' .mer_tx input').val('PM');
+                    if (currentMeridianValue === 'AM') {
+                        $elementWrapper.find('.' + currentInputClass + ' .mer_tx input').val('PM');
                     } else {
-                        $elementWrapper.find('.' + cur_cli + ' .mer_tx input').val('AM');
+                        $elementWrapper.find('.' + currentInputClass + ' .mer_tx input').val('AM');
                     }
                 } else if ((cur_ele && cur_ele.hasClass('action-prev')) || direction === 'prev') {
-                    if (cur_mer === 'AM') {
-                        $elementWrapper.find('.' + cur_cli + ' .mer_tx input').val('PM');
+                    if (currentMeridianValue === 'AM') {
+                        $elementWrapper.find('.' + currentInputClass + ' .mer_tx input').val('PM');
                     } else {
-                        $elementWrapper.find('.' + cur_cli + ' .mer_tx input').val('AM');
+                        $elementWrapper.find('.' + currentInputClass + ' .mer_tx input').val('AM');
                     }
                 }
             }
