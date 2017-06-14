@@ -3,15 +3,14 @@
   "version": "1.0.2",
   "main": [
     "css/timepicki.css",
-    "images/arrow.png",
-    "images/top_arr.png",
+    "images/input-arrows.png",
+    "images/top-arrow.png",
     "js/timepicki.js"
   ],
   "authors": [
     "TimePicki"
   ],
   "description": "",
-  "main": "",
   "license": "MIT",
   "homepage": "",
   "ignore": [
