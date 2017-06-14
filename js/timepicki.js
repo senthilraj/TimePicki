@@ -36,7 +36,7 @@
                 oveflow: false
             },
             showMeridian: true,
-            disableMobileKeyboard: false,
+            disableKeyboard: false,
             showResetButton: false
         }, options);
 
@@ -46,7 +46,7 @@
                 topArrowButton = '<div class="prev action-next"></div>',
                 bottomArrowButton = '<div class="next action-prev"></div>';
 
-            $element.wrap('<div class="time_pick">');
+            $element.wrap('<div class="timepicki time_pick">');
             var $parent = $element.parents('.time_pick');
 
             var $newElement = $(
@@ -54,12 +54,12 @@
                 '<div class="arrow_top"></div>' +
                 '<div class="time">' +
                 topArrowButton +
-                '<div class="ti_tx"><input type="text" class="timepicki-input"' + (settings.disableMobileKeyboard ? 'readonly' : '') + '></div>' +
+                '<div class="ti_tx"><input type="text" class="timepicki-input"' + (settings.disableKeyboard ? 'readonly' : '') + '></div>' +
                 bottomArrowButton +
                 '</div>' +
                 '<div class="mins">' +
                 topArrowButton +
-                '<div class="mi_tx"><input type="text" class="timepicki-input"' + (settings.disableMobileKeyboard ? 'readonly' : '') + '></div>' +
+                '<div class="mi_tx"><input type="text" class="timepicki-input"' + (settings.disableKeyboard ? 'readonly' : '') + '></div>' +
                 bottomArrowButton +
                 '</div>'
             );
