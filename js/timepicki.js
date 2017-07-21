@@ -49,7 +49,8 @@
 			overflow_minutes: false,
 			disable_keyboard_mobile: false,
 			reset: false,
-			on_change: null
+			on_change: null,
+      			input_writable: false
 		};
 
 		var settings = $.extend({}, defaults, options);
@@ -361,9 +362,11 @@
 			function open_timepicki() {
 				set_date(settings.start_time);
 				ele_next.fadeIn();
-				// focus on the first input and select its contents
-				var first_input = ele_next.find('input:visible').first();
-				first_input.focus();
+				if(!settings.input_writable) {
+					// focus on the first input and select its contents
+					var first_input = ele_next.find('input:visible').first();
+					first_input.focus();
+				}
 				// if the user presses shift+tab while on the first input,
 				// they mean to exit the time picker and go to the previous field
 				var first_input_exit_handler = function(e) {
