@@ -129,6 +129,17 @@
 &lt;/script&gt;</pre>
 		<input id="timepicker10" type="text" name="timepicker10"/>
 	    </div>
+        <div class="text-left">
+            <h3>Close</h3>
+            <p>if you want to have a button that closes the picker and saves the value</p>
+            <pre>
+                &lt;script type='text/javascript'&gt;
+                $('#timepicker12').timepicki({close_button: true});
+                &lt;/script&gt;
+            </pre>
+            <input id="timepicker12" type="text" name="timepicker12"/>
+        </div>
+
 		<div class="text-left">
 		<h3>Full 24-Hour example</h3>
 		<p>more elaborate example of 24 Hour clock.</p>
@@ -170,7 +181,7 @@
     <script>
 	$('#timepicker1').timepicki({increase_direction:'up'});
 	$('#timepicker2').timepicki({min_hour_value:4});
-	$('#timepicker3').timepicki({max_hour_value:8}); 
+	$('#timepicker3').timepicki({max_hour_value:8});
 	$('#timepicker4').timepicki({custom_classes:"myclass"});
 	$('#timepicker5').timepicki({show_meridian:false});
 	$('#timepicker6').timepicki({
@@ -190,6 +201,7 @@
 		overflow_minutes:true,
 		increase_direction:'up',
 		disable_keyboard_mobile: true});
+    $('#timepicker12').timepicki({close_button:true});
 	</script>
     <script src="js/bootstrap.min.js"></script>
   </body>

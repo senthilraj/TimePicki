@@ -28,7 +28,7 @@ How to use
 <input type="text" name="timepicker" class="time_element"/>
 ```        
 
-- 4)also put css fiel
+- 4)also put css file
 ```html
 <link rel="stylesheet" type="text/css" href="css/timepicki.css">
 ```

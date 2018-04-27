@@ -1,5 +1,5 @@
 
-/* 
+/*
 Created on: 17 Sep, 2014, 4:29:37 PM
 Author: senthil
 */
@@ -88,4 +88,15 @@ a.reset_time {
 	float: left;
 	margin-top: 5px;
 	color: #000;
+}
+
+a.close_button{
+	color: #212121;
+	border: 1px solid lightgrey;
+	padding: 0 4px;
+	border-radius: 5px;
+	position: absolute;
+	top: 1px;
+	right: 1px;
+	font-size: 1em;
 }
