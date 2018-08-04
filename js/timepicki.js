@@ -34,7 +34,7 @@
 			        if (mini < 10)
 			            mini = "0" + mini;
 
-			        mini = Math.min(Math.max(parseInt(mini), 0), 59);
+			        //mini = Math.min(Math.max(parseInt(mini), 0), 59);
 
 					return tim + ":" + mini;
 				}
