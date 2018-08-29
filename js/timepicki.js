@@ -5,6 +5,18 @@
  */
 (function($) {
 
+	"use strict";
+        
+    function snapToStep(segment, step) {
+      if (segment % step === 0) {
+        return segment;
+      }
+      if (Math.round((segment % step) / step)) {
+        return (segment + (step - segment % step)) % 60;
+      } else {
+        return segment - segment % step;
+      }
+    }
 	$.fn.timepicki = function(options) {
 
 		var defaults = {
@@ -13,12 +25,13 @@
                     // limit hours between 1 and 12 - inculsive.
 			        tim = Math.min(Math.max(parseInt(tim), 1), 12);
 			        if (tim < 10)
+					{
 			            tim = "0" + tim;
-
+					}
 
 			        mini = Math.min(Math.max(parseInt(mini), 0), 59);
 			        if (mini < 10)
-			            mini = "0" + mini;
+			        {    mini = "0" + mini;}
 
 					return tim + ":" + mini + " " + meri;
 			    } else {
@@ -27,12 +40,12 @@
 			        tim = Math.min(Math.max(parseInt(tim), 0), 23);
 
 			        if (tim < 10)
-			            tim = "0" + tim;
+			        {    tim = "0" + tim;}
 
 
 			        mini = Math.min(Math.max(parseInt(mini), 0), 59);
 			        if (mini < 10)
-			            mini = "0" + mini;
+			        {    mini = "0" + mini;}
 
 			        //mini = Math.min(Math.max(parseInt(mini), 0), 59);
 
@@ -46,6 +59,7 @@
 			show_meridian: true,
 			step_size_hours: '1',
 			step_size_minutes: '1',
+            snapToStep:false,
 			overflow_minutes: false,
 			disable_keyboard_mobile: false,
 			reset: false,
@@ -73,7 +87,7 @@
 
 			var new_ele = $(
 				"<div class='timepicker_wrap " + settings.custom_classes + "'>" +
-					"<div class='arrow_top'></div>" +
+					"<div class='arrow_top'></div>" + "<div class='timepicki-close-container'><span class='timepicki-close'>×</span></div>" +
 					"<div class='time'>" +
 						top_arrow_button +
 						"<div class='ti_tx'><input type='text' class='timepicki-input'" + (settings.disable_keyboard_mobile ? "readonly" : "") + "></div>" +
@@ -107,7 +121,9 @@
 			});
 
 			$(".timepicki-input").keydown(function (keyevent) {
-			    // our goal here is very simple.
+				var done;
+				
+				// our goal here is very simple.
 			    // no matter what the user presses
 			    // we must ensure that the values in our
 			    // timepicki inputs are valid, and that pressing
@@ -135,7 +151,7 @@
 
                 // (1)
 			    // prevent potential form submission, if enter is pressed.
-			    if (keyevent.keyCode == 13) {
+			    if (keyevent.keyCode === 13) {
 
 			        keyevent.preventDefault();
 
@@ -166,7 +182,6 @@
 			    // validate() function validates the
 			    // user input.
 			    function validate() {
-
 			        var isValidNumber = /^\d+$/.test(input.val());
 			        var isEmpty = input.val() === "";
 
@@ -255,7 +270,7 @@
 
 			// open or close time picker when clicking
 			$(document).on("click", function(event) {
-				if (!$(event.target).is(ele_next) && ele_next.css("display")=="block" && !$(event.target).is($('.reset_time'))) {
+				if (!$(event.target).is(ele_next) && ele_next.css("display")==="block" && !$(event.target).is($('.reset_time'))) {
 					if (!$(event.target).is(ele)) {
 						set_value(event, !is_element_in_timepicki($(event.target)));
 					} else {
@@ -360,11 +375,12 @@
 			}
 
 			function open_timepicki() {
+				var first_input;
 				set_date(settings.start_time);
 				ele_next.fadeIn();
 				if(!settings.input_writable) {
 					// focus on the first input and select its contents
-					var first_input = ele_next.find('input:visible').first();
+					ele_next.find('input:visible').first();
 					first_input.focus();
 				}
 				// if the user presses shift+tab while on the first input,
@@ -380,6 +396,9 @@
 				};
 				first_input.on('keydown', first_input_exit_handler);
 			}
+            $('.timepicki-close').on('click',function(){
+                close_timepicki();                
+            });
 
 			function close_timepicki() {
 				ele_next.fadeOut();
@@ -407,11 +426,15 @@
 					d = new Date();
 					ti = d.getHours();
 					mi = d.getMinutes();
+                    if(settings.snapToStep === true)
+                    {
+                        mi = snapToStep(mi, settings.step_size_minutes);
+                    }
 					mer = "AM";
 					if (settings.show_meridian){
-						if (ti == 0) { // midnight
+						if (ti === 0) { // midnight
 							ti = 12;
-						} else if (ti == 12) { // noon
+						} else if (ti === 12) { // noon
 							mer = "PM";
 						} else if (ti > 12) {
 							ti -= 12;
@@ -462,7 +485,7 @@
 						ele_next.find("." + cur_cli + " .ti_tx input").val(cur_time);
 					}
 				} else if ((cur_ele && cur_ele.hasClass('action-prev')) || direction === 'prev') {
-					var minValue = Number(settings.min_hour_value)
+					var minValue = Number(settings.min_hour_value);
 					if (cur_time - step_size < minValue) {
 						var max_value = ele_en;
 						if (max_value < 10) {
@@ -488,6 +511,10 @@
 				var ele_en = 59;
 				var step_size = Number(settings.step_size_minutes);
 				if ((cur_ele && cur_ele.hasClass('action-next')) || direction === 'next') {
+					if(settings.snapToStep)
+                    {
+                        cur_mins = snapToStep(cur_mins, settings.step_size_minutes);
+                    }
 					if (cur_mins + step_size > ele_en) {
 						ele_next.find("." + cur_cli + " .mi_tx input").val("00");
 						if(settings.overflow_minutes){
@@ -525,13 +552,13 @@
 				var cur_mer = null;
 				cur_mer = ele_next.find("." + cur_cli + " .mer_tx input").val();
 				if ((cur_ele && cur_ele.hasClass('action-next')) || direction === 'next') {
-					if (cur_mer == "AM") {
+					if (cur_mer === "AM") {
 						ele_next.find("." + cur_cli + " .mer_tx input").val("PM");
 					} else {
 						ele_next.find("." + cur_cli + " .mer_tx input").val("AM");
 					}
 				} else if ((cur_ele && cur_ele.hasClass('action-prev')) || direction === 'prev') {
-					if (cur_mer == "AM") {
+					if (cur_mer === "AM") {
 						ele_next.find("." + cur_cli + " .mer_tx input").val("PM");
 					} else {
 						ele_next.find("." + cur_cli + " .mer_tx input").val("AM");
@@ -544,9 +571,9 @@
 			var cur_prev = ele_next.find(".action-prev");
 			$(cur_prev).add(cur_next).on("click", function() {
 				var cur_ele = $(this);
-				if (cur_ele.parent().attr("class") == "time") {
+				if (cur_ele.parent().attr("class") === "time") {
 					change_time(cur_ele);
-				} else if (cur_ele.parent().attr("class") == "mins") {
+				} else if (cur_ele.parent().attr("class") === "mins") {
 					change_mins(cur_ele);
 				} else {
 					if(settings.show_meridian){

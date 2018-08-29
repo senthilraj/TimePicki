@@ -75,6 +75,32 @@ Author: senthil
 	height: 10px;
 	z-index: 999;
 }
+.timepicker_wrap .timepicki-close-container {
+	text-align: right;
+	display: block;
+	width: 100%;
+	clear: both;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+.timepicker_wrap .timepicki-close {
+	float: right;
+	font-size: 25px;
+	color: #999;
+	clear: both;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	padding-left: 10px;
+	padding-right: 5px;
+	display: inline-block;
+	margin-right: -5px;
+	line-height: 1;
+	padding-bottom: 10px;
+}
 input.timepicki-input {
 	background: none repeat scroll 0 0 #FFFFFF;
     	border: 1px solid #CCCCCC;
