@@ -85,6 +85,18 @@
 		<input id="timepicker5" type="text" name="timepicker5"/>
 	    </div>
 		<div class="text-left">
+		<h3>Snap to Step</h3>
+		<p>If true, setting the time will snap it to the closest "step" (based on step_size_hours and step_size_minutes values).</p>
+		<pre>&lt;script type='text/javascript'&gt;
+	$('#timepicker6a').timepicki({
+		snapToStep: true,
+		step_size_hours:2,
+		step_size_minutes:15});
+&lt;/script&gt;</pre>
+		<input id="timepicker6a" type="text" name="timepicker6a"/>
+		<p>here the minutes are changed per quarter instead of per minute, and the hours will be changed per two.</p>
+	    </div>
+		<div class="text-left">
 		<h3>Set step size hour and minutes</h3>
 		<p>with this option you can choose the step size with which minutes and hours have to increase or decrease.</p>
 		<pre>&lt;script type='text/javascript'&gt;
@@ -173,6 +185,10 @@
 	$('#timepicker3').timepicki({max_hour_value:8}); 
 	$('#timepicker4').timepicki({custom_classes:"myclass"});
 	$('#timepicker5').timepicki({show_meridian:false});
+	$('#timepicker6a').timepicki({
+		snapToStep:true,
+		step_size_hours:2,
+		step_size_minutes:15});
 	$('#timepicker6').timepicki({
 		step_size_hours:2,
 		step_size_minutes:15});
