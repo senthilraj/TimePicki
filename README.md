@@ -47,7 +47,7 @@ if you need to know about timepicki features and options to [Click here](http://
 
 About me
 ========
- I am senthil and I am 9 years Frontend developer. I am building innovative applications, any doubts on TimePicki plugin or add addtional feature in this plugin feel free to catch me on Mail: senthil2rajan@gmail.com
+ I am senthil and I am  7+ years Frontend developer. I am building innovative applications, any doubts on TimePicki plugin or add addtional feature in this plugin feel free to catch me on Mail: senthil2rajan@gmail.com
 
 Website: http://senthilraj.github.io/resume/
 
