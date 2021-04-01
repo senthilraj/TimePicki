@@ -36,7 +36,7 @@
 
 			        //mini = Math.min(Math.max(parseInt(mini), 0), 59);
 
-					return tim + ":" + mini;
+					return (tim + ":" + mini).replace(/ /g,'');
 				}
 			},
 			increase_direction: 'up',
