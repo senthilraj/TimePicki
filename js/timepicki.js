@@ -2,6 +2,9 @@
  * Author: @senthil2rajan
  * plugin: timepicker
  * website: senthilraj.github.io/Timepicki
+ *
+ * Forked by @centell
+ * https://github.com/centell/TimePicki
  */
 (function($) {
 
@@ -9,34 +12,33 @@
 
 		var defaults = {
 			format_output: function(tim, mini, meri) {
-			    if (settings.show_meridian) {
-                    // limit hours between 1 and 12 - inculsive.
-			        tim = Math.min(Math.max(parseInt(tim), 1), 12);
-			        if (tim < 10)
-			            tim = "0" + tim;
+        if (settings.show_meridian) {
+          // hours: limit hours between 1 and 12 - inculsive.
+          tim = Math.min(Math.max(parseInt(tim), 1), 12);
+          if (tim < 10)
+              tim = "0" + tim;
+          // minutes
+          mini = Math.min(Math.max(parseInt(mini), 0), 59);
+          if (mini < 10)
+              mini = "0" + mini;
+
+          return tim + ":" + mini + " " + meri;
+        } else {
+
+            // limit hours between 0 and 23 - inculsive.
+            tim = Math.min(Math.max(parseInt(tim), 0), 23);
+
+            if (tim < 10)
+                tim = "0" + tim;
 
 
-			        mini = Math.min(Math.max(parseInt(mini), 0), 59);
-			        if (mini < 10)
-			            mini = "0" + mini;
+            mini = Math.min(Math.max(parseInt(mini), 0), 59);
+            if (mini < 10)
+                mini = "0" + mini;
 
-					return tim + ":" + mini + " " + meri;
-			    } else {
+            //mini = Math.min(Math.max(parseInt(mini), 0), 59);
 
-			        // limit hours between 0 and 23 - inculsive.
-			        tim = Math.min(Math.max(parseInt(tim), 0), 23);
-
-			        if (tim < 10)
-			            tim = "0" + tim;
-
-
-			        mini = Math.min(Math.max(parseInt(mini), 0), 59);
-			        if (mini < 10)
-			            mini = "0" + mini;
-
-			        //mini = Math.min(Math.max(parseInt(mini), 0), 59);
-
-					return tim + ":" + mini;
+        return tim + ":" + mini;
 				}
 			},
 			increase_direction: 'up',
@@ -50,7 +52,8 @@
 			disable_keyboard_mobile: false,
 			reset: false,
 			on_change: null,
-      			input_writable: false
+      input_writable: false,
+      language: 'eng'  // eng, kor
 		};
 
 		var settings = $.extend({}, defaults, options);
@@ -407,15 +410,15 @@
 					d = new Date();
 					ti = d.getHours();
 					mi = d.getMinutes();
-					mer = "AM";
+					mer = get_meridian(settings.language).am;
 					if (settings.show_meridian){
 						if (ti == 0) { // midnight
 							ti = 12;
 						} else if (ti == 12) { // noon
-							mer = "PM";
+							mer = get_meridian(settings.language).pm;
 						} else if (ti > 12) {
 							ti -= 12;
-							mer = "PM";
+							mer = get_meridian(settings.language).pm;
 						}
 					}
 				}
@@ -525,19 +528,38 @@
 				var cur_mer = null;
 				cur_mer = ele_next.find("." + cur_cli + " .mer_tx input").val();
 				if ((cur_ele && cur_ele.hasClass('action-next')) || direction === 'next') {
-					if (cur_mer == "AM") {
-						ele_next.find("." + cur_cli + " .mer_tx input").val("PM");
+					if (cur_mer == get_meridian(settings.language).am) {
+						ele_next.find("." + cur_cli + " .mer_tx input").val(get_meridian(settings.language).pm);
 					} else {
-						ele_next.find("." + cur_cli + " .mer_tx input").val("AM");
+						ele_next.find("." + cur_cli + " .mer_tx input").val(get_meridian(settings.language).am);
 					}
 				} else if ((cur_ele && cur_ele.hasClass('action-prev')) || direction === 'prev') {
-					if (cur_mer == "AM") {
-						ele_next.find("." + cur_cli + " .mer_tx input").val("PM");
+					if (cur_mer == get_meridian(settings.language).am) {
+						ele_next.find("." + cur_cli + " .mer_tx input").val(get_meridian(settings.language).pm);
 					} else {
-						ele_next.find("." + cur_cli + " .mer_tx input").val("AM");
+						ele_next.find("." + cur_cli + " .mer_tx input").val(get_meridian(settings.language).am);
 					}
 				}
 			}
+			
+			function get_meridian(lang) {
+				let objMeridian;
+				switch (lang) {
+					case 'eng':
+            objMeridian = {
+            	am: 'AM',
+							pm: 'PM'
+            };
+            break;
+					case 'kor':
+						objMeridian = {
+              am: '오전',
+              pm: '오후'
+						};
+            break;
+				}
+				return objMeridian;
+      }
 
 			// handle clicking on the arrow icons
 			var cur_next = ele_next.find(".action-next");
